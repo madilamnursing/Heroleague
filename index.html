@@ -1,0 +1,2072 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hero League Academy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bangers&family=Nunito:wght@400;700;800;900&display=swap">
+<style>/*
+VOICE: loud, friendly comic-book narrator — short, punchy, never mean.
+IDEA: a comic book where every screen is a page of inked panels.
+PICTURE: the kid's own hero and each arena's scene, drawn large in the top panel.
+COLOUR and TYPE: hero yellow ground with halftone, ink black outlines, red action, blue support; Bangers titles, Nunito text.
+LAYOUT: one column of tilted panels; arena scene above the challenge; stacks on phones.
+*/
+:root{color-scheme:light;--ink:#16141a;--paper:#fffdf6;--yel:#ffd23f;--red:#e63946;--blue:#1d6fe0;--sky:#2ec4f1;--grn:#1fa35c;--org:#ff8a1f;--mut:#5a5566;--bg:#ffd23f;--panel:#fffdf6;--shadow:6px 6px 0 var(--ink);--r:14px}
+*{box-sizing:border-box;min-width:0}
+html,body{margin:0;height:100%}
+body{background:var(--bg) radial-gradient(circle,rgba(230,57,70,.18) 1.6px,transparent 1.8px) 0 0/14px 14px;color:var(--ink);font:17px/1.5 "Nunito",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;overflow-x:clip}
+h1,h2,h3,.comic{font-family:"Bangers","Impact","Arial Black",system-ui,sans-serif;letter-spacing:.04em;font-weight:400;line-height:1.05;margin:0}
+h1{font-size:clamp(36px,6vw,58px)}h2{font-size:clamp(28px,4vw,40px)}h3{font-size:24px}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:4px solid var(--blue);outline-offset:3px}
+[tabindex="-1"]:focus{outline:none}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+#app{max-width:1100px;margin:0 auto;padding:12px max(2.5vw,10px) 40px}
+/* top bar */
+.topbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.logo{display:flex;align-items:center;gap:8px;background:var(--red);color:#fff;border:4px solid var(--ink);border-radius:12px;padding:4px 14px 2px;box-shadow:4px 4px 0 var(--ink);transform:rotate(-1.5deg);font-size:26px;text-shadow:2px 2px 0 var(--ink);text-decoration:none;cursor:pointer}
+.logo span{color:var(--yel)}
+.topbar .grow{flex:1}
+.chip{display:inline-flex;align-items:center;gap:6px;background:var(--paper);border:3px solid var(--ink);border-radius:999px;padding:4px 12px;font-weight:800;font-size:15px;white-space:nowrap}
+.chip b{color:var(--red)}
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:8px 18px;border:4px solid var(--ink);border-radius:12px;background:var(--paper);box-shadow:4px 4px 0 var(--ink);font-weight:900;font-size:17px;transition:transform .08s,box-shadow .08s;text-align:center}
+.btn:hover{transform:translate(-1px,-1px);box-shadow:5px 5px 0 var(--ink)}
+.btn:active{transform:translate(3px,3px);box-shadow:1px 1px 0 var(--ink)}
+.btn.red{background:var(--red);color:#fff}.btn.blue{background:var(--blue);color:#fff}.btn.yel{background:var(--yel)}.btn.grn{background:var(--grn);color:#fff}
+.btn.big{font-family:"Bangers","Impact",sans-serif;font-size:28px;letter-spacing:.05em;padding:10px 26px;font-weight:400}
+.btn.sm{min-height:44px;padding:6px 12px;font-size:15px;box-shadow:3px 3px 0 var(--ink);border-width:3px}
+.btn[disabled]{opacity:.45;cursor:not-allowed;transform:none}
+.btn.on{background:var(--ink);color:var(--yel)}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.row.c{justify-content:center}
+/* panels */
+.panel{background:var(--panel);border:4px solid var(--ink);border-radius:var(--r);box-shadow:var(--shadow);padding:clamp(14px,2.5vw,24px);margin-bottom:18px;position:relative}
+.panel.tilt{transform:rotate(-.6deg)}.panel.tilt2{transform:rotate(.5deg)}
+.caption{position:absolute;top:-16px;left:16px;background:var(--yel);border:3px solid var(--ink);padding:2px 12px;font-family:"Bangers",Impact,sans-serif;font-size:19px;letter-spacing:.05em;transform:rotate(-2deg)}
+.muted{color:var(--mut)}
+.grid2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:18px;align-items:start}
+.grid4{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:18px}
+@media(max-width:720px){.grid2{grid-template-columns:minmax(0,1fr)}}
+/* title */
+.title-hero{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:20px;align-items:center}
+@media(max-width:720px){.title-hero{grid-template-columns:minmax(0,1fr)}}
+.burst{display:inline-block;background:var(--red);color:#fff;padding:6px 16px;border:4px solid var(--ink);transform:rotate(-3deg);text-shadow:3px 3px 0 var(--ink);box-shadow:var(--shadow)}
+.burst2{display:inline-block;background:var(--blue);color:#fff;padding:4px 14px;border:4px solid var(--ink);transform:rotate(2deg);margin-top:-6px;text-shadow:2px 2px 0 var(--ink)}
+.herobox{display:flex;justify-content:center;align-items:flex-end;background:linear-gradient(#2ec4f1,#9fe7ff);border:4px solid var(--ink);border-radius:var(--r);min-height:300px;position:relative;overflow:hidden}
+.herobox svg{width:min(250px,70%);height:auto;position:relative;z-index:1}
+.herobox::after{content:"";position:absolute;inset:0;background:repeating-conic-gradient(from 0deg at 50% 60%,rgba(255,255,255,.25) 0 8deg,transparent 8deg 20deg)}
+/* creator */
+.opt-label{font-weight:900;margin:12px 0 6px;display:block}
+.swatches{display:flex;flex-wrap:wrap;gap:8px}
+.sw{width:44px;height:44px;border-radius:50%;border:4px solid var(--ink);padding:0}
+.sw[aria-pressed=true]{outline:4px solid var(--blue);outline-offset:2px;transform:scale(1.08)}
+.choice{min-height:44px;padding:6px 12px;border:3px solid var(--ink);border-radius:10px;background:var(--paper);font-weight:800;display:inline-flex;align-items:center;gap:6px}
+.choice[aria-pressed=true]{background:var(--yel);box-shadow:3px 3px 0 var(--ink)}
+.choice[disabled]{opacity:.45}
+.choice svg{width:24px;height:24px}
+.txt{width:100%;min-height:48px;font-size:20px;border:4px solid var(--ink);border-radius:10px;padding:6px 12px;background:#fff;font-weight:800}
+/* hub */
+.seg{display:inline-flex;border:4px solid var(--ink);border-radius:12px;overflow:hidden;box-shadow:3px 3px 0 var(--ink)}
+.seg button{border:0;border-right:3px solid var(--ink);background:var(--paper);min-height:46px;padding:6px 14px;font-weight:900}
+.seg button:last-child{border-right:0}
+.seg button[aria-pressed=true]{background:var(--ink);color:var(--yel)}
+.arena-card{display:flex;flex-direction:column;background:var(--panel);border:4px solid var(--ink);border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden;transition:transform .12s}
+.arena-card:hover{transform:rotate(-1deg) translateY(-3px)}
+.arena-card .art{height:130px;border-bottom:4px solid var(--ink);position:relative;overflow:hidden}
+.arena-card .art svg{width:100%;height:100%;display:block}
+.arena-card .body{padding:12px 14px 14px;display:flex;flex-direction:column;gap:8px;flex:1}
+.arena-card p{margin:0;font-size:15px}
+.arena-card .btn{margin-top:auto}
+/* banners */
+.banner{height:16px;border:3px solid var(--ink);border-radius:6px;margin:8px 0}
+.banner.none{display:none}
+.banner.bolt{background:repeating-linear-gradient(120deg,var(--yel) 0 16px,var(--ink) 16px 22px,var(--red) 22px 38px,var(--ink) 38px 44px)}
+.banner.stars{background:#1b1f4a radial-gradient(circle,#fff 1.5px,transparent 2px) 0 0/18px 12px}
+.banner.checker{background:conic-gradient(var(--ink) 25%,#fff 0 50%,var(--ink) 0 75%,#fff 0) 0 0/16px 16px}
+.banner.galaxy{background:linear-gradient(90deg,#ff5fa2,#6a5cff,#2ec4f1,#1fa35c,#ffd23f)}
+/* round */
+.roundbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:12px}
+.pips{display:flex;gap:6px;flex-wrap:wrap}
+.pip{width:22px;height:22px;border:3px solid var(--ink);border-radius:50%;background:#fff}
+.pip.ok{background:var(--grn)}.pip.half{background:var(--yel)}.pip.miss{background:#bbb}.pip.now{background:var(--blue);box-shadow:0 0 0 3px var(--yel)}
+.stage{position:relative;height:clamp(220px,34vw,320px);border:4px solid var(--ink);border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden;margin-bottom:18px;background:#1b1f4a}
+.stage svg.scene{position:absolute;inset:0;width:100%;height:100%}
+.stage .hud{position:absolute;top:8px;left:8px;right:8px;display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;z-index:5;pointer-events:none}
+.stage .hud>*{pointer-events:auto}
+.meter{background:#fff;border:3px solid var(--ink);border-radius:10px;padding:3px 8px;font-weight:900;font-size:14px;min-width:150px}
+.meter .bar{height:12px;border:2px solid var(--ink);border-radius:6px;background:#eee;overflow:hidden;margin-top:2px}
+.meter .bar i{display:block;height:100%;background:linear-gradient(90deg,var(--org),var(--red));transition:width .5s}
+.board{display:flex;gap:6px;align-items:stretch;background:var(--ink);color:#fff;border:3px solid #000;border-radius:10px;padding:4px 8px;font-family:"Courier New",monospace;font-weight:900}
+.board .sc{background:#000;color:#ffe34d;padding:0 8px;border-radius:6px;font-size:24px;min-width:52px;text-align:center}
+.board .lb{font-size:11px;text-align:center;font-family:Nunito,system-ui,sans-serif}
+.hero-sprite{position:absolute;bottom:6%;width:clamp(80px,13vw,120px);transition:left .7s ease,bottom .7s ease,transform .3s;z-index:3}
+.hero-sprite svg,.rival-sprite svg{width:100%;height:auto;display:block}
+.rival-sprite{position:absolute;bottom:6%;width:clamp(86px,14vw,130px);z-index:2;transition:transform .3s}
+.bubble{position:absolute;background:#fff;border:3px solid var(--ink);border-radius:14px;padding:4px 10px;font-weight:900;font-size:15px;z-index:6;white-space:nowrap}
+.challenge h3{margin-bottom:6px}
+.prompt{font-size:clamp(20px,2.6vw,26px);font-weight:900;margin:6px 0 12px}
+.sentence{font-size:20px;background:#fff7d1;border:3px dashed var(--ink);border-radius:10px;padding:8px 12px;margin:8px 0}
+.clue{font-weight:800;color:var(--blue)}
+.tiles{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0;min-height:60px}
+.tile{width:52px;height:56px;border:4px solid var(--ink);border-radius:10px;background:var(--yel);font-family:"Bangers",Impact,sans-serif;font-size:30px;display:inline-flex;align-items:center;justify-content:center;box-shadow:3px 3px 0 var(--ink);text-transform:uppercase}
+.tile.slot{background:#fff;border-style:dashed;box-shadow:none}
+.tile.filled{background:var(--sky);border-style:solid}
+.tile.used{visibility:hidden}
+.tile.given{background:#e9e4d6;box-shadow:none}
+.lin{width:52px;height:56px;border:4px solid var(--ink);border-radius:10px;background:#fff;font-family:"Bangers",Impact,sans-serif;font-size:30px;text-align:center;text-transform:uppercase;padding:0}
+.choices{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;margin:10px 0}
+.choices .btn{font-size:22px;min-height:60px}
+.choices .btn.wrong{background:#ccc;text-decoration:line-through}
+.choices .btn.right{background:var(--grn);color:#fff}
+.answer-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:10px 0}
+.answer-row .txt{max-width:260px}
+.fb{border:4px solid var(--ink);border-radius:12px;padding:10px 14px;margin-top:12px;font-weight:800;background:#fff}
+.fb.good{background:#d8f8e4}.fb.bad{background:#ffe6d5}.fb.info{background:#e3efff}
+.fb ol,.fb ul{margin:6px 0 0;padding-left:22px}
+.fb h4{margin:0 0 4px;font-size:20px;font-family:"Bangers",Impact,sans-serif;letter-spacing:.05em;font-weight:400}
+.offer{background:var(--yel);border:4px solid var(--ink);border-radius:12px;padding:12px 14px;margin-bottom:12px;box-shadow:4px 4px 0 var(--ink)}
+.timerbar{height:12px;border:3px solid var(--ink);border-radius:8px;background:#fff;overflow:hidden;margin:6px 0 10px}
+.timerbar i{display:block;height:100%;background:var(--grn);transition:width 1s linear}
+/* hints */
+.hintbox{border:3px solid var(--ink);border-radius:12px;background:#f0f7ff;padding:10px 12px;margin-top:10px}
+.dots{display:inline-grid;gap:4px;margin:6px 0}
+.dot{width:14px;height:14px;border-radius:50%;background:var(--red);border:2px solid var(--ink)}
+.grp{display:inline-flex;flex-wrap:wrap;gap:3px;border:3px solid var(--ink);border-radius:12px;padding:6px;margin:4px;max-width:120px;background:#fff}
+.grp.take{background:#fff3b0}
+.fbar{display:flex;border:3px solid var(--ink);border-radius:6px;overflow:hidden;height:30px;margin:6px 0;max-width:420px}
+.fbar i{flex:1;border-right:2px solid var(--ink);background:#fff}
+.fbar i:last-child{border-right:0}
+.fbar i.f{background:var(--org)}
+.area{display:flex;max-width:420px;border:3px solid var(--ink);margin:6px 0}
+.area div{padding:12px 6px;text-align:center;font-weight:900;border-right:3px solid var(--ink);background:#fff3b0}
+.area div:last-child{border-right:0;background:#d6ecff}
+.place{font-family:"Courier New",monospace;font-size:22px;font-weight:900;line-height:1.25;text-align:right;display:inline-block;background:#fff;border:3px solid var(--ink);border-radius:8px;padding:6px 14px}
+/* soccer aim */
+.aim{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;max-width:420px;margin:10px 0}
+.aim .btn{min-height:56px}
+/* word search */
+.ws{display:grid;gap:4px;margin:10px 0;max-width:460px}
+.ws button{aspect-ratio:1;border:3px solid var(--ink);border-radius:8px;background:#fff;font-family:"Bangers",Impact,sans-serif;font-size:clamp(18px,3.2vw,26px);padding:0;min-height:36px}
+.ws button.sel{background:var(--sky)}
+.ws button.found{background:var(--grn);color:#fff}
+.ws button.flash{background:var(--yel)}
+.wslist{display:flex;flex-wrap:wrap;gap:8px}
+.wslist span{border:3px solid var(--ink);border-radius:8px;padding:2px 10px;font-weight:900;background:#fff}
+.wslist span.done{background:var(--grn);color:#fff;text-decoration:line-through}
+/* wordle */
+.wd{display:grid;gap:6px;justify-content:center;margin:10px 0}
+.wd .wr{display:grid;grid-template-columns:repeat(5,clamp(46px,11vw,58px));gap:6px}
+.wd .wc{aspect-ratio:1;border:4px solid var(--ink);border-radius:8px;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:"Bangers",Impact,sans-serif;font-size:clamp(22px,5vw,30px);line-height:1;text-transform:uppercase;position:relative}
+.wc small{font-family:Nunito,system-ui,sans-serif;font-size:12px;font-weight:900;position:absolute;bottom:1px;right:4px}
+.wc.correct,.key.correct{background:var(--grn);color:#fff}
+.wc.present,.key.present{background:var(--org);color:var(--ink)}
+.wc.absent,.key.absent{background:#8d8a94;color:#fff}
+.kb{display:grid;gap:6px;margin-top:8px}
+.kb .kr{display:flex;gap:5px;justify-content:center}
+.key{min-width:0;flex:1;max-width:46px;min-height:52px;border:3px solid var(--ink);border-radius:8px;background:#fff;font-weight:900;padding:0;font-size:17px}
+.key.wide{max-width:84px;flex:1.6;font-size:13px}
+.legend{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;font-size:14px;font-weight:800}
+.legend span{display:inline-flex;align-items:center;gap:4px}
+.legend i{display:inline-flex;width:24px;height:24px;border:2px solid var(--ink);border-radius:5px;align-items:center;justify-content:center;font-style:normal;font-size:13px}
+/* progress */
+.skillrow{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,2fr) auto;gap:10px;align-items:center;padding:8px 0;border-bottom:2px dashed #c9c3b5}
+.skillrow:last-child{border-bottom:0}
+.acc{height:18px;border:3px solid var(--ink);border-radius:9px;background:#eee;overflow:hidden}
+.acc i{display:block;height:100%;background:var(--grn)}
+.tag{display:inline-block;border:2px solid var(--ink);border-radius:999px;padding:0 8px;font-size:13px;font-weight:900;background:#fff;white-space:nowrap}
+.tag.m{background:var(--yel)}
+.badges{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px}
+.badge{border:3px solid var(--ink);border-radius:12px;padding:10px;text-align:center;background:#fff;font-size:14px}
+.badge.locked{opacity:.4;filter:grayscale(1)}
+.badge svg{width:54px;height:54px;display:block;margin:0 auto 4px}
+.badge b{display:block;font-size:15px}
+@media(max-width:600px){.skillrow{grid-template-columns:minmax(0,1fr) auto}.skillrow .acc-wrap{grid-column:1/-1;order:3}}
+/* modal / toast / fx */
+.modal{position:fixed;inset:0;background:rgba(22,20,26,.6);display:flex;align-items:center;justify-content:center;z-index:50;padding:16px}
+.modal[hidden]{display:none}
+.modal .panel{max-width:520px;width:100%;margin:0}
+.toast{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:60;display:flex;flex-direction:column;gap:8px;align-items:center;pointer-events:none}
+.toast div{background:var(--ink);color:var(--yel);border:3px solid var(--yel);border-radius:12px;padding:8px 16px;font-weight:900;animation:pop .35s}
+#fx{position:fixed;inset:0;pointer-events:none;z-index:40;overflow:hidden}
+.pow{position:absolute;left:50%;top:38%;transform:translate(-50%,-50%) rotate(-8deg);font-family:"Bangers",Impact,sans-serif;font-size:clamp(48px,10vw,96px);color:var(--yel);-webkit-text-stroke:3px var(--ink);text-shadow:6px 6px 0 var(--red);animation:powin .9s ease-out forwards;white-space:nowrap}
+.pt{position:absolute;width:14px;height:14px;border:2px solid var(--ink);animation:fly 1.1s ease-out forwards}
+.pt.star{clip-path:polygon(50% 0,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);border:0;width:22px;height:22px}
+.bolt-fx{position:absolute;width:40px;height:120px;background:var(--yel);clip-path:polygon(40% 0,100% 0,60% 40%,95% 40%,20% 100%,40% 55%,5% 55%);animation:zap .7s steps(3) forwards}
+@keyframes pop{from{transform:scale(.6);opacity:0}to{transform:scale(1);opacity:1}}
+@keyframes powin{0%{transform:translate(-50%,-50%) scale(.2) rotate(-20deg);opacity:0}25%{transform:translate(-50%,-50%) scale(1.15) rotate(-8deg);opacity:1}80%{opacity:1}100%{transform:translate(-50%,-50%) scale(1) rotate(-8deg);opacity:0}}
+@keyframes fly{from{transform:translate(0,0) rotate(0);opacity:1}to{transform:translate(var(--dx),var(--dy)) rotate(540deg);opacity:0}}
+@keyframes zap{0%,100%{opacity:0}30%,70%{opacity:1}}
+@keyframes bounce{0%,100%{transform:translateY(0)}40%{transform:translateY(-26px)}}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes flex{0%,100%{transform:scale(1)}50%{transform:scale(1.15)}}
+@keyframes strut{0%{transform:translateX(-140%)}100%{transform:translateX(0)}}
+@keyframes sweep{0%,100%{transform:rotate(-18deg)}50%{transform:rotate(18deg)}}
+@keyframes crowd{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+.do-bounce{animation:bounce .6s ease}.do-shake{animation:shake .4s ease}.do-spin{animation:spin .8s ease}.do-flex{animation:flex .5s ease 2}
+.spot{transform-origin:50% 0;animation:sweep 3s ease-in-out infinite}
+.crowdrow{animation:crowd .5s ease-in-out infinite}
+.entrance{position:absolute;inset:0;background:radial-gradient(circle at 50% 30%,#3a2a6b,#0d0b1c);z-index:8;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:#fff;padding:12px}
+.entrance .name{font-family:"Bangers",Impact,sans-serif;font-size:clamp(36px,7vw,64px);color:var(--yel);-webkit-text-stroke:2px var(--ink);text-shadow:4px 4px 0 var(--red)}
+.entrance .walker{width:clamp(80px,14vw,120px);animation:strut 1.6s ease-out}
+.entrance .btn{margin-top:8px}
+/* reduced motion */
+body.rm *,body.rm *::before,body.rm *::after{animation:none!important;transition:none!important}
+body.rm .pt,body.rm .bolt-fx{display:none}
+body.rm .pow{animation:none!important;opacity:1}
+@media print{body{background:#fff}}
+.logo{white-space:nowrap}
+@media(max-width:600px){.logo{font-size:19px;padding:3px 10px 1px}.topbar{gap:8px}.topbar .btn.sm{padding:4px 10px;font-size:14px}.chip{font-size:13px;padding:3px 9px}.toast div{font-size:14px;padding:5px 12px}.stage .hud .meter{display:none}}
+</style>
+</head>
+<body>
+<div id="app">
+<header class="topbar" id="topbar"></header>
+<main id="screen" aria-live="off"></main>
+<noscript><p class="panel">Hero League Academy needs JavaScript turned on to play.</p></noscript>
+</div>
+<div class="modal" id="modal" hidden></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<div id="fx" aria-hidden="true"></div>
+<script>/* ===== Hero League Academy: curated content ===== */
+var HLA_DATA = (function () {
+  // w = word, c = clue, s = context sentence (___ marks the word), t = s standard / c challenge, th = theme
+  var WORDS = [
+    // ---------- standard ----------
+    { w: "hero", c: "A brave person who helps others", s: "The ___ swooped down to help the lost kitten.", t: "s", th: "hero" },
+    { w: "cape", c: "Cloth that flows from a hero's shoulders", s: "Her red ___ flapped in the wind as she flew.", t: "s", th: "hero" },
+    { w: "mask", c: "Covers a hero's face to hide who they are", s: "He put on his ___ so no one would know his name.", t: "s", th: "hero" },
+    { w: "power", c: "A special ability, like super strength", s: "Her secret ___ is running faster than a train.", t: "s", th: "hero" },
+    { w: "rescue", c: "To save someone from danger", s: "The team rushed to ___ the people on the bridge.", t: "s", th: "hero" },
+    { w: "brave", c: "Not afraid to face danger", s: "It was ___ of him to climb up and help.", t: "s", th: "hero" },
+    { w: "team", c: "A group that plays or works together", s: "Our ___ passed the ball to each other all game.", t: "s", th: "sports" },
+    { w: "goal", c: "In soccer, you score one by kicking the ball into the net", s: "She kicked the ball and scored a ___!", t: "s", th: "soccer" },
+    { w: "score", c: "The number of points each side has in a game", s: "The ___ was tied at the end of the first half.", t: "s", th: "sports" },
+    { w: "coach", c: "The person who trains a team", s: "The ___ blew her whistle to start practice.", t: "s", th: "sports" },
+    { w: "player", c: "Someone who plays on a team", s: "Every ___ on the team wore a blue jersey.", t: "s", th: "sports" },
+    { w: "crowd", c: "A big group of fans in the stands", s: "The ___ cheered when the champ walked out.", t: "s", th: "wrestling" },
+    { w: "cheer", c: "To shout loudly to support your team", s: "We ___ every time our team scores.", t: "s", th: "sports" },
+    { w: "jump", c: "To push off the ground into the air", s: "He can ___ high enough to touch the rim.", t: "s", th: "basketball" },
+    { w: "throw", c: "To toss a ball with your arm", s: "Can you ___ the ball all the way to me?", t: "s", th: "sports" },
+    { w: "kick", c: "To hit a ball with your foot", s: "Give the ball a hard ___ toward the net.", t: "s", th: "soccer" },
+    { w: "catch", c: "To grab a ball out of the air", s: "The keeper made a great ___ to stop the shot.", t: "s", th: "soccer" },
+    { w: "city", c: "A big town with tall buildings", s: "The hero watched over the whole ___ at night.", t: "s", th: "hero" },
+    { w: "tower", c: "A very tall, narrow building", s: "A cat was stuck at the top of the clock ___.", t: "s", th: "hero" },
+    { w: "signal", c: "A light or sign that sends a message", s: "The bright ___ in the sky called the heroes.", t: "s", th: "hero" },
+    { w: "shield", c: "A hero holds this up to block things", s: "She raised her ___ to block the falling rocks.", t: "s", th: "hero" },
+    { w: "speed", c: "How fast something moves", s: "The runner picked up ___ near the finish line.", t: "s", th: "hero" },
+    { w: "flight", c: "The act of flying through the air", s: "The hero's ___ over the city took one minute.", t: "s", th: "hero" },
+    { w: "gadget", c: "A clever little tool or device", s: "His belt holds a ___ that shoots a grappling rope.", t: "s", th: "hero" },
+    { w: "rival", c: "Someone you compete against again and again", s: "Her old ___ wanted a rematch in the ring.", t: "s", th: "wrestling" },
+    { w: "champion", c: "The winner of a contest or league", s: "The new ___ held the trophy over her head.", t: "s", th: "wrestling" },
+    { w: "belt", c: "A wrestling champion wears a shiny gold one at the waist", s: "The champ lifted the gold title ___ high.", t: "s", th: "wrestling" },
+    { w: "ring", c: "The roped square where wrestlers compete", s: "The wrestlers climbed into the ___ under the ropes.", t: "s", th: "wrestling" },
+    { w: "match", c: "A game or contest between two sides", s: "The big ___ starts at seven o'clock tonight.", t: "s", th: "wrestling" },
+    { w: "victory", c: "Another word for a win", s: "The team danced after their big ___.", t: "s", th: "sports" },
+    { w: "energy", c: "The strength to keep moving and working", s: "A good breakfast gives you ___ for the game.", t: "s", th: "sports" },
+    { w: "helmet", c: "A hard hat that protects your head", s: "Always wear a ___ when you ride your bike.", t: "s", th: "sports" },
+    { w: "whistle", c: "The referee blows this to stop play", s: "The ref blew the ___ to end the game.", t: "s", th: "sports" },
+    { w: "dribble", c: "To bounce the ball as you move in basketball", s: "You must ___ the ball as you run down the court.", t: "s", th: "basketball" },
+    { w: "basket", c: "The hoop and net you shoot at on the court", s: "He jumped and dropped the ball into the ___.", t: "s", th: "basketball" },
+    { w: "court", c: "The floor where basketball is played", s: "The players ran onto the shiny wooden ___.", t: "s", th: "basketball" },
+    { w: "field", c: "The grassy area where soccer is played", s: "The soccer ___ was wet after the rain.", t: "s", th: "soccer" },
+    { w: "mighty", c: "Very strong and powerful", s: "The ___ hero lifted the bus with one hand.", t: "s", th: "hero" },
+    { w: "thunder", c: "The loud boom you hear after lightning", s: "We heard ___ rumble across the sky.", t: "s", th: "hero" },
+    { w: "storm", c: "Wind, rain, and lightning all together", s: "The ___ knocked out the city lights.", t: "s", th: "hero" },
+    { w: "night", c: "The dark time after the sun sets", s: "The stars came out late at ___.", t: "s", th: "hero" },
+    { w: "bridge", c: "Something built so you can cross over water", s: "Cars drove across the long ___ over the river.", t: "s", th: "hero" },
+    { w: "danger", c: "Something that could hurt you", s: "The sign warned of ___ near the cliff.", t: "s", th: "hero" },
+    { w: "secret", c: "Something that is kept hidden", s: "A hero never tells anyone the ___ hideout.", t: "s", th: "hero" },
+    { w: "silver", c: "A shiny gray metal; the second-place medal", s: "She won the ___ medal for second place.", t: "s", th: "sports" },
+    { w: "medal", c: "A round prize you wear around your neck", s: "Each runner got a ___ on a ribbon.", t: "s", th: "sports" },
+    { w: "trophy", c: "A big cup or statue given to winners", s: "The team put the ___ in the glass case.", t: "s", th: "sports" },
+    { w: "ticket", c: "A paper that lets you into the game", s: "Show your ___ at the stadium gate.", t: "s", th: "sports" },
+    { w: "practice", c: "Doing something again and again to get better", s: "We have soccer ___ after school.", t: "s", th: "sports" },
+    { w: "strong", c: "Having lots of power and muscle", s: "You have to be ___ to lift that bar.", t: "s", th: "hero" },
+    { w: "quick", c: "Very fast", s: "The ___ fox darted past the goalie.", t: "s", th: "sports" },
+    { w: "proud", c: "Feeling great about something you did", s: "Mom was ___ of how hard I tried.", t: "s", th: "sports" },
+    { w: "switch", c: "You flip this to turn a light on or off", s: "Flip the ___ to turn on the lights.", t: "s", th: "hero" },
+    { w: "laser", c: "A thin, powerful beam of light", s: "A red ___ beam lit up the dark room.", t: "s", th: "hero" },
+    { w: "rocket", c: "It blasts off into space", s: "The ___ zoomed up into outer space.", t: "s", th: "hero" },
+    { w: "planet", c: "Earth is one of these", s: "Mars is the red ___.", t: "s", th: "hero" },
+    { w: "comic", c: "A story told in pictures and speech bubbles", s: "I read a ___ about a flying dog.", t: "s", th: "hero" },
+    { w: "costume", c: "The special outfit a hero wears", s: "His ___ had a lightning bolt on the chest.", t: "s", th: "hero" },
+    { w: "partner", c: "Someone who works with you as a pair", s: "My tag-team ___ tagged me into the match.", t: "s", th: "wrestling" },
+    { w: "ladder", c: "You climb its rungs to get up high", s: "The firefighter climbed the ___ to the roof.", t: "s", th: "hero" },
+    { w: "rope", c: "A thick cord used to climb or pull", s: "The hero swung across on a ___.", t: "s", th: "hero" },
+    { w: "glove", c: "You wear it on your hand", s: "The keeper pulled on her other ___.", t: "s", th: "soccer" },
+    { w: "jersey", c: "A team shirt with a number on the back", s: "He wears number 10 on his ___.", t: "s", th: "sports" },
+    { w: "shoot", c: "To try to score by sending the ball at the goal", s: "Get open so you can ___ the ball!", t: "s", th: "sports" },
+    { w: "fans", c: "People who love and support a team", s: "The ___ waved flags in the stands.", t: "s", th: "sports" },
+    // ---------- challenge ----------
+    { w: "courage", c: "Bravery even when you feel scared", s: "It takes ___ to try something new.", t: "c", th: "hero" },
+    { w: "villain", c: "The bad guy in a story", s: "The ___ tried to steal the city's power.", t: "c", th: "hero" },
+    { w: "mystery", c: "Something strange that is hard to explain", s: "The missing trophy was a big ___.", t: "c", th: "hero" },
+    { w: "invisible", c: "Not able to be seen", s: "The ___ hero sneaked past the guards.", t: "c", th: "hero" },
+    { w: "lightning", c: "A bright flash of electricity in a storm", s: "A bolt of ___ lit up the sky.", t: "c", th: "hero" },
+    { w: "guardian", c: "Someone who protects and watches over others", s: "The ___ of the city never slept.", t: "c", th: "hero" },
+    { w: "championship", c: "The final contest that decides the best team", s: "We won the ___ game in overtime!", t: "c", th: "sports" },
+    { w: "tournament", c: "A series of games played to find one winner", s: "Sixteen teams entered the soccer ___.", t: "c", th: "sports" },
+    { w: "stadium", c: "A huge sports arena with seats all around", s: "Thousands of fans filled the ___.", t: "c", th: "sports" },
+    { w: "athlete", c: "A person who trains hard at a sport", s: "A great ___ practices every day.", t: "c", th: "sports" },
+    { w: "captain", c: "The leader of a team", s: "The team ___ wore a band on her arm.", t: "c", th: "sports" },
+    { w: "defense", c: "The players trying to stop the other team from scoring", s: "Our ___ blocked every shot.", t: "c", th: "sports" },
+    { w: "referee", c: "The official who makes sure players follow the rules", s: "The ___ held up a yellow card.", t: "c", th: "sports" },
+    { w: "spectacular", c: "Amazing and exciting to watch", s: "That diving catch was ___!", t: "c", th: "sports" },
+    { w: "incredible", c: "So amazing it is hard to believe", s: "Her ___ jump reached the top rope.", t: "c", th: "wrestling" },
+    { w: "powerful", c: "Full of strength", s: "He has a ___ kick from midfield.", t: "c", th: "soccer" },
+    { w: "legendary", c: "So great that people tell stories about it", s: "The ___ wrestler came back for one last match.", t: "c", th: "wrestling" },
+    { w: "mission", c: "An important job you are sent to do", s: "Our ___ is to rescue the stranded hikers.", t: "c", th: "hero" },
+    { w: "teammate", c: "Someone on the same team as you", s: "I passed the ball to my ___.", t: "c", th: "sports" },
+    { w: "equipment", c: "The gear you need to play a sport", s: "Put all the soccer ___ back in the bag.", t: "c", th: "sports" },
+    { w: "headquarters", c: "The main base where a team makes plans", s: "The heroes met at their secret ___.", t: "c", th: "hero" },
+    { w: "celebrate", c: "To have fun because something good happened", s: "Let's ___ our big win with a party!", t: "c", th: "sports" },
+    { w: "determined", c: "Not willing to give up", s: "She was ___ to make the winning shot.", t: "c", th: "sports" },
+    { w: "microphone", c: "The announcer talks into this so everyone can hear", s: "The announcer grabbed the ___ and yelled.", t: "c", th: "wrestling" },
+    { w: "announcer", c: "The person who calls out the action at a game", s: "The ___ shouted the wrestler's name.", t: "c", th: "wrestling" },
+    { w: "opponent", c: "The person or team you play against", s: "Shake hands with your ___ after the game.", t: "c", th: "sports" },
+    { w: "signature", c: "Your name written in your own special way", s: "The star wrote her ___ on my poster.", t: "c", th: "wrestling" },
+    { w: "gravity", c: "The force that pulls things down to the ground", s: "___ pulls the ball back down after you throw it.", t: "c", th: "hero" },
+    { w: "telescope", c: "A tool for seeing faraway stars", s: "We looked at the moon through a ___.", t: "c", th: "hero" },
+    { w: "knuckle", c: "A bendy joint in your finger", s: "He bumped his ___ on the goal post.", t: "c", th: "sports" },
+    { w: "wrestler", c: "A person who competes in the ring", s: "The ___ bounced off the ropes.", t: "c", th: "wrestling" },
+    { w: "balance", c: "Staying steady without falling over", s: "Keep your ___ on the narrow beam.", t: "c", th: "sports" },
+    { w: "fearless", c: "Not afraid of anything at all", s: "The ___ hero jumped from the plane.", t: "c", th: "hero" },
+    { w: "dangerous", c: "Likely to cause harm", s: "Crossing the busy road alone is ___.", t: "c", th: "hero" },
+    { w: "journey", c: "A long trip from one place to another", s: "The team's ___ to the finals took all season.", t: "c", th: "sports" },
+    { w: "neighbor", c: "Someone who lives next door", s: "Our ___ came over to watch the game.", t: "c", th: "hero" },
+    { w: "rhythm", c: "A steady beat, like in music", s: "The crowd clapped to the ___ of the drums.", t: "c", th: "wrestling" },
+    { w: "exercise", c: "Activity that keeps your body strong and healthy", s: "Running is great ___ for your heart.", t: "c", th: "sports" },
+    { w: "goalkeeper", c: "The soccer player who guards the net", s: "The ___ dove and saved the shot.", t: "c", th: "soccer" },
+    { w: "basketball", c: "A sport with hoops and a bouncing orange ball", s: "We play ___ in the gym on Fridays.", t: "c", th: "basketball" }
+  ];
+
+  // Homophones: s = sentence with ___, o = options, a = answer, why = short explanation
+  var HOMOPHONES = [
+    { s: "The players put ___ water bottles on the bench.", o: ["their", "there"], a: "their", why: "\"Their\" shows something belongs to them.", t: "s" },
+    { s: "Put the ball over ___ by the goal.", o: ["their", "there"], a: "there", why: "\"There\" tells you a place.", t: "s" },
+    { s: "Press the ___ to stop the bike.", o: ["break", "brake"], a: "brake", why: "A \"brake\" is what stops a bike or car.", t: "s" },
+    { s: "Be careful not to ___ the window!", o: ["break", "brake"], a: "break", why: "To \"break\" means to crack or smash.", t: "s" },
+    { s: "Can I have a ___ of pizza?", o: ["piece", "peace"], a: "piece", why: "A \"piece\" is a part of something. Think \"a PIEce of PIE.\"", t: "s" },
+    { s: "The hero brought ___ back to the city.", o: ["piece", "peace"], a: "peace", why: "\"Peace\" means calm, with no fighting.", t: "s" },
+    { s: "Did you ___ the crowd roar?", o: ["hear", "here"], a: "hear", why: "You \"hear\" with your EAR. Both have e-a-r.", t: "s" },
+    { s: "Come over ___ and grab a jersey.", o: ["hear", "here"], a: "here", why: "\"Here\" tells you a place.", t: "s" },
+    { s: "Please ___ your name on the poster.", o: ["right", "write"], a: "write", why: "To \"write\" is to put words on paper.", t: "s" },
+    { s: "Turn ___ at the stadium gate.", o: ["right", "write"], a: "right", why: "\"Right\" is a direction (or correct).", t: "s" },
+    { s: "Our team ___ the big game!", o: ["won", "one"], a: "won", why: "\"Won\" is the past tense of win.", t: "s" },
+    { s: "She scored ___ goal in the first half.", o: ["won", "one"], a: "one", why: "\"One\" is the number 1.", t: "s" },
+    { s: "The ___ rode a horse into the castle.", o: ["knight", "night"], a: "knight", why: "A \"knight\" wears armor. It starts with a silent k.", t: "s" },
+    { s: "We need ___ to bake the victory cake.", o: ["flour", "flower"], a: "flour", why: "\"Flour\" is the powder used for baking.", t: "s" },
+    { s: "The hero picked a ___ for her mom.", o: ["flour", "flower"], a: "flower", why: "A \"flower\" grows in a garden.", t: "s" },
+    { s: "Jerseys are on ___ for half price.", o: ["sail", "sale"], a: "sale", why: "On \"sale\" means it costs less.", t: "s" },
+    { s: "The big game is next ___.", o: ["weak", "week"], a: "week", why: "A \"week\" has seven days.", t: "s" },
+    { s: "The fans flew to the game on a ___.", o: ["plane", "plain"], a: "plane", why: "A \"plane\" flies in the sky.", t: "s" },
+    { s: "The dog wagged its ___ after the goal.", o: ["tail", "tale"], a: "tail", why: "A \"tail\" is on an animal. A \"tale\" is a story.", t: "s" },
+    { s: "The tower was built from strong ___.", o: ["steal", "steel"], a: "steel", why: "\"Steel\" is a hard metal.", t: "s" },
+    { s: "The team ___ the bus to the stadium.", o: ["road", "rode"], a: "rode", why: "\"Rode\" is the past tense of ride.", t: "s" },
+    { s: "The ball rolled into a ___ in the field.", o: ["hole", "whole"], a: "hole", why: "A \"hole\" is an opening in the ground.", t: "s" },
+    { s: "The ___ team ran onto the court.", o: ["hole", "whole"], a: "whole", why: "\"Whole\" means all of it.", t: "s" },
+    { s: "Let's ___ at the gym after school.", o: ["meet", "meat"], a: "meet", why: "To \"meet\" is to get together.", t: "s" },
+    { s: "He ___ the ball across the field.", o: ["through", "threw"], a: "threw", why: "\"Threw\" is the past tense of throw.", t: "s" },
+    { s: "I need a new ___ of soccer socks.", o: ["pair", "pear"], a: "pair", why: "A \"pair\" means two that go together.", t: "s" },
+    { s: "The referee ___ the whistle.", o: ["blew", "blue"], a: "blew", why: "\"Blew\" is the past tense of blow.", t: "s" },
+    { s: "I want to ___ a ticket to the match.", o: ["by", "buy"], a: "buy", why: "To \"buy\" is to pay for something.", t: "s" },
+    { s: "From the tower you can ___ the whole city.", o: ["sea", "see"], a: "see", why: "You \"see\" with your eyes.", t: "s" },
+    // challenge: three-way and trickier pairs
+    { s: "___ going to win the championship this year!", o: ["Their", "There", "They're"], a: "They're", why: "\"They're\" is short for \"they are.\"", t: "c" },
+    { s: "The fans left ___ signs in the stands.", o: ["their", "there", "they're"], a: "their", why: "\"Their\" shows the signs belong to the fans.", t: "c" },
+    { s: "Is ___ room for one more hero?", o: ["their", "there", "they're"], a: "there", why: "\"There\" is used for places and with \"is\" or \"are.\"", t: "c" },
+    { s: "The team has ___ new players.", o: ["to", "too", "two"], a: "two", why: "\"Two\" is the number 2.", t: "c" },
+    { s: "I want to play in the game ___!", o: ["to", "too", "two"], a: "too", why: "\"Too\" means also (or very).", t: "c" },
+    { s: "We walked ___ the arena.", o: ["to", "too", "two"], a: "to", why: "\"To\" shows direction.", t: "c" },
+    { s: "The team lost ___ best player to an injury.", o: ["its", "it's"], a: "its", why: "\"Its\" shows belonging. No apostrophe!", t: "c" },
+    { s: "___ time for the main event!", o: ["Its", "It's"], a: "It's", why: "\"It's\" is short for \"it is.\"", t: "c" },
+    { s: "___ ready for the next round?", o: ["Your", "You're"], a: "You're", why: "\"You're\" is short for \"you are.\"", t: "c" },
+    { s: "Don't forget ___ water bottle.", o: ["your", "you're"], a: "your", why: "\"Your\" shows something belongs to you.", t: "c" },
+    { s: "___ jersey is this?", o: ["Whose", "Who's"], a: "Whose", why: "\"Whose\" asks who something belongs to.", t: "c" },
+    { s: "___ ready to face the champion?", o: ["Whose", "Who's"], a: "Who's", why: "\"Who's\" is short for \"who is.\"", t: "c" },
+    { s: "The ball flew right ___ the goalposts.", o: ["through", "threw"], a: "through", why: "\"Through\" means in one side and out the other.", t: "c" },
+    { s: "The bus ___ is two dollars.", o: ["fair", "fare"], a: "fare", why: "A \"fare\" is the price of a ride.", t: "c" },
+    { s: "The referee made a ___ call.", o: ["fair", "fare"], a: "fair", why: "\"Fair\" means following the rules equally.", t: "c" },
+    { s: "The hero's ___ team beat the villains.", o: ["principal", "principle"], a: "principal", why: "\"Principal\" can mean main or most important.", t: "c" }
+  ];
+
+  // Wordle answers (kid-friendly 5-letter words)
+  var WORDLE_ANSWERS = ("power champ score goals crowd cheer brave speed flash storm light night sport coach match rival catch throw shoot blast flame laser tower robot medal teams field court pitch climb quick brick smash steel guard boost jumps leaps chase rally ropes spark beams orbit comet arena clash pride glove swift might brain smart train skill world plane hoops dunks shout grand fight trick super cards cloak flags").split(" ");
+
+  // Extra valid guesses (common 5-letter words)
+  var WORDLE_VALID_EXTRA = ("about above actor acute adult after again agent agree ahead alarm album alert alien alike alive allow alone along alter among angel anger angle angry apart apple apply arise armor array arrow aside asset audio avoid awake award aware awful bacon badge baker basic basin batch beach beard beast began begin being below bench berry birth black blade blame blank blaze bleed blend bless blind block blood bloom blown board boats bones bonus books booth boots bored bound boxer brand bread break breed brick bride brief bring broad broke brown brush build built bunch burst buyer cabin cable camel camps candy canoe cargo carry carve cases catch cause chain chair chalk charm chart cheap check cheek chess chest chick chief child chill chips choir chose civic civil claim class clean clear clerk click cliff clock close cloth cloud clown clubs coast color comic coral could count cover crack craft crane crash crazy cream creek crest crisp cross crown crush curve cycle daily dairy dance dates dealt delay delta dense depth diary dirty disco ditch diver dizzy dodge doing doors dough dozen draft drain drama drank drawn dream dress dried drift drill drink drive drops drove drums dry dusty eager eagle early earth eaten eight elbow elder elect empty enemy enjoy enter entry equal error event every exact exist extra fable faces facts faint fairy faith false fancy fault favor feast fence ferry fever fewer fiber fifth fifty final first fixed flair flake flank flare flask fleet flesh flies float flock flood floor flour fluid flute focus force forge forth forty forum found frame frank fresh fries front frost fruit fully funny gains games gauge ghost giant given glass gleam globe glory goose grace grade grain grape grass great greed green greet grill grind gripe group grove grown guess guest guide habit happy harsh haste hatch haven heard heart heavy hedge hello helps hence herbs hills hobby holds holes honey honor hoped horse hotel hound house human humor hurry ideal image index inner input issue ivory jelly jewel joint joker jolly judge juice juicy kayak kicks kings kites knees knife knock known label labor lakes lamps lance large later laugh layer learn lease least leave legal lemon level lever limit lined lions lists lived liver lobby local lodge logic loose lorry lower loyal lucky lunar lunch magic major maker mango maple march marsh mayor meals meant medal media melon mercy merge merit merry messy metal meter midst minor minus mixed model money month moose motor mount mouse mouth moved movie muddy music naval nerve never newer nicer ninja noble noise north notch noted novel nurse ocean offer often olive onion opera order other otter ought outer owner paint panda panel paper parks party pasta paste patch pause peace peach pearl pedal penny perch phase phone photo piano picks piece pilot pinch pizza place plain plant plate plaza point polar porch pound press price print prize probe proof proud prove pupil puppy purse queen quest quiet quilt quite quota quote radar radio rainy raise ranch range rapid ratio reach react ready realm relax reply rider ridge right rigid rings rinse risky river roads roast rocks rocky roles roman roofs rooms roost roots round route royal rugby ruler rural salad salty sandy sauce scale scare scarf scene scent scoop scope scout scrap seeds sense serve seven shade shake shall shape share shark sharp sheep sheet shelf shell shift shine shiny shirt shock shore short shown sides sight silly since sixth sixty sized skate skies skirt skunk slate sleep slice slide slope small smell smile smoke snack snake sneak solar solid solve sorry sound south space spare speak spell spend spent spice spike spine spoke spoon spray squad stack staff stage stair stamp stand stare stars start state stays steam steep stick still stock stone stood stool store story stove strap straw strip stuck study stuff style sugar suite sunny sweet swing table taken tales talks taste teach tears teeth thank theme there thick thing think third those three throw thumb tiger tight timer tired title toast today token tooth topic torch total touch tough tours towel track trade trail treat trees trend trial tribe tried trips troop truck truly trunk trust truth tulip tutor twice twins uncle under union unite unity until upper upset urban usage usual valid value valve video vinyl visit vital vivid vocal voice wagon waist watch water waves weary weeks weigh weird whale wheat wheel where which while white whole whose wider woman women woods words works worry worth would wound wrist write wrong yacht yards years yeast yield young yours youth zebra zones").split(" ");
+
+  // Word-search vocabulary (no spaces, max 8 letters)
+  var SEARCH_WORDS = ["hero", "cape", "mask", "power", "goal", "team", "score", "coach", "crowd", "cheer", "jump", "kick", "tower", "shield", "speed", "rival", "belt", "ring", "match", "court", "field", "storm", "medal", "trophy", "rocket", "laser", "comic", "rope", "glove", "jersey", "dunk", "pass", "hoop", "net", "champ", "flash", "brave", "gadget", "signal", "arena"];
+
+  return { WORDS: WORDS, HOMOPHONES: HOMOPHONES, WORDLE_ANSWERS: WORDLE_ANSWERS, WORDLE_VALID_EXTRA: WORDLE_VALID_EXTRA, SEARCH_WORDS: SEARCH_WORDS };
+})();
+if (typeof module !== "undefined") module.exports = HLA_DATA;
+</script>
+<script>/* ===== Hero League Academy: game logic (pure, testable) ===== */
+var HLA = (function (D) {
+  "use strict";
+  // ---------- RNG ----------
+  var seed = (Date.now() ^ 0x5f3759df) >>> 0;
+  function rand() { // mulberry32
+    seed = (seed + 0x6d2b79f5) >>> 0;
+    var t = seed;
+    t = Math.imul(t ^ (t >>> 15), t | 1);
+    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  }
+  function setSeed(s) { seed = s >>> 0; }
+  function ri(a, b) { return a + Math.floor(rand() * (b - a + 1)); }
+  function pick(arr) { return arr[Math.floor(rand() * arr.length)]; }
+  function shuffle(arr) { var a = arr.slice(); for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(rand() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+  function chance(p) { return rand() < p; }
+
+  // ---------- skills ----------
+  var SKILLS = {
+    scramble: { subject: "spell", name: "Word Scramble" },
+    missing: { subject: "spell", name: "Missing Letters" },
+    homophone: { subject: "spell", name: "Sound-Alike Words" },
+    dictation: { subject: "spell", name: "Spell It (Hear the Word)" },
+    wordsearch: { subject: "spell", name: "Word Search" },
+    wordle: { subject: "spell", name: "Word Vault (5-letter)" },
+    add: { subject: "math", name: "Addition" },
+    sub: { subject: "math", name: "Subtraction" },
+    mult: { subject: "math", name: "Multiplication" },
+    div: { subject: "math", name: "Division" },
+    frac: { subject: "math", name: "Fractions" },
+    word: { subject: "math", name: "Word Problems" }
+  };
+  var TIERS = ["easy", "standard", "challenge"];
+  function harder(t) { return t === "easy" ? "standard" : "challenge"; }
+
+  // ---------- fractions ----------
+  function gcd(a, b) { a = Math.abs(a); b = Math.abs(b); while (b) { var t = b; b = a % b; a = t; } return a || 1; }
+  function simp(n, d) { var g = gcd(n, d); return { n: n / g, d: d / g }; }
+  function fstr(n, d) { return n + "/" + d; }
+  function parseFrac(s) {
+    s = String(s).replace(/\s+/g, "");
+    var m = s.match(/^(\d+)\/(\d+)$/);
+    if (!m) return null;
+    var n = +m[1], d = +m[2];
+    if (d === 0) return null;
+    return { n: n, d: d };
+  }
+  function parseIntAnswer(s) {
+    s = String(s).trim().replace(/,/g, "").replace(/\s+/g, "");
+    if (!/^-?\d+$/.test(s)) return null;
+    return parseInt(s, 10);
+  }
+  function fmt(n) { return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
+
+  // ---------- multiple-choice helpers ----------
+  function intChoices(ans, extras) {
+    var set = [ans];
+    (extras || []).forEach(function (x) { if (x > 0 && set.indexOf(x) < 0) set.push(x); });
+    var deltas = shuffle([1, -1, 2, -2, 10, -10, 5, -5, 3, -3]);
+    for (var i = 0; set.length < 4 && i < deltas.length; i++) {
+      var v = ans + deltas[i];
+      if (v >= 0 && set.indexOf(v) < 0) set.push(v);
+    }
+    return shuffle(set.slice(0, 4)).map(String);
+  }
+  function fracChoices(n, d) {
+    var opts = [fstr(n, d)];
+    var cands = [fstr(d - n, d), fstr(n, d + 1), fstr(n + 1, d), fstr(Math.max(1, n - 1), d), fstr(n, d + 2), fstr(n + 1, d + 1)];
+    cands.forEach(function (c) {
+      var p = parseFrac(c);
+      if (opts.length < 4 && opts.indexOf(c) < 0 && p && p.n > 0 && p.n <= p.d && p.n * d !== n * p.d) opts.push(c);
+    });
+    return shuffle(opts);
+  }
+
+  // ---------- math question builder ----------
+  function mq(o) {
+    // o: skill, tier, prompt, answer(number|string), type 'int'|'frac'|'sym', expr, explain, solution[], hint, sig, extras, equiv, mcOnly, typeOnly, visual, theme
+    var q = {
+      subject: "math", skill: o.skill, tier: o.tier, type: "math", prompt: o.prompt,
+      answer: String(o.answer), answerType: o.type || "int", expr: o.expr, equiv: !!o.equiv,
+      explain: o.explain, solution: o.solution, hint: o.hint, sig: o.sig, visual: o.visual || null, theme: o.theme || null
+    };
+    var useMC = o.mcOnly ? true : o.typeOnly ? false : chance(0.45);
+    q.format = useMC ? "mc" : "type";
+    if (useMC) {
+      if (q.answerType === "int") q.choices = intChoices(+o.answer, o.extras);
+      else if (q.answerType === "frac") { var p = parseFrac(o.answer); q.choices = fracChoices(p.n, p.d); }
+      else q.choices = o.choices;
+    }
+    return q;
+  }
+  function chainSteps(a, b, op) {
+    // break b into place-value chunks: a +/- hundreds, tens, ones
+    var parts = [], s = String(b), steps = [], cur = a;
+    for (var i = 0; i < s.length; i++) { var v = +s[i] * Math.pow(10, s.length - 1 - i); if (v) parts.push(v); }
+    parts.forEach(function (p) {
+      var nxt = op === "+" ? cur + p : cur - p;
+      steps.push(fmt(cur) + " " + (op === "+" ? "+" : "−") + " " + fmt(p) + " = " + fmt(nxt));
+      cur = nxt;
+    });
+    return { steps: steps, result: cur };
+  }
+
+  var BALL_THEME = {
+    soccer: { team: "the Comets", other: "the Rockets", thing: "soccer balls" },
+    basketball: { team: "the Sky Hawks", other: "the Iron Owls", thing: "basketballs" },
+    hero: { team: "the Hero League", other: "the Gloom Gang", thing: "gadgets" },
+    wrestling: { team: "the Thunder Twins", other: "the Rumble Brothers", thing: "foam fingers" }
+  };
+
+  var MATH = {};
+  MATH.add = function (tier, theme) {
+    var a, b, c;
+    if (tier === "easy") { a = ri(12, 58); b = ri(11, 39); }
+    else if (tier === "standard") { a = ri(125, 489); b = ri(108, 395); }
+    else { a = ri(1205, 4890); b = ri(355, 2890); }
+    var ch = chainSteps(a, b, "+");
+    var prompt;
+    if (theme === "wrestling" && chance(0.6)) prompt = "The arena has " + fmt(a) + " fans on one side and " + fmt(b) + " fans on the other. How many fans are there in all?";
+    else if (theme === "basketball" && chance(0.6)) prompt = "The Sky Hawks scored " + fmt(a) + " points last season at home and " + fmt(b) + " on the road. How many points in all?";
+    else prompt = fmt(a) + " + " + fmt(b) + " = ?";
+    return mq({ skill: "add", tier: tier, prompt: prompt, answer: a + b, expr: a + "+" + b,
+      explain: "Break the second number into hundreds, tens, and ones, and add one piece at a time.",
+      solution: ch.steps.concat(["Answer: " + fmt(a + b)]),
+      hint: { kind: "place", a: a, b: b, op: "+" }, sig: "add:" + a + "+" + b, extras: [a + b + 10, a + b - 10, a + b + 100] });
+  };
+  MATH.sub = function (tier, theme) {
+    var a, b;
+    if (tier === "easy") { a = ri(40, 99); b = ri(11, a - 10); }
+    else if (tier === "standard") { a = ri(402, 950); b = ri(118, a - 60); }
+    else { a = ri(2003, 9500); b = ri(1080, a - 300); }
+    var ch = chainSteps(a, b, "-");
+    var prompt;
+    if (theme === "basketball" && chance(0.6)) prompt = "The scoreboard says " + a + " to " + b + ". How many points is the lead?";
+    else if (theme === "hero" && chance(0.6)) prompt = "The tower is " + fmt(a) + " feet tall. The hero has climbed " + fmt(b) + " feet. How many feet are left to climb?";
+    else prompt = fmt(a) + " − " + fmt(b) + " = ?";
+    if (theme === "basketball" && tier === "challenge") prompt = fmt(a) + " − " + fmt(b) + " = ?";
+    return mq({ skill: "sub", tier: tier, prompt: prompt, answer: a - b, expr: a + "-" + b,
+      explain: "Take away the second number one place at a time: hundreds, then tens, then ones.",
+      solution: ch.steps.concat(["Answer: " + fmt(a - b)]),
+      hint: { kind: "place", a: a, b: b, op: "-" }, sig: "sub:" + a + "-" + b, extras: [a - b + 10, a - b - 10, a + b] });
+  };
+  MATH.mult = function (tier, theme) {
+    var a, b;
+    if (theme === "soccer" && tier !== "challenge" && chance(0.4)) {
+      var k = ri(2, 6);
+      return mq({ skill: "mult", tier: tier, theme: "soccer", prompt: "A soccer team has 11 players on the field. How many players are on " + k + " teams?",
+        answer: 11 * k, expr: "11*" + k, explain: "Each team has 11 players. Count 11 a total of " + k + " times — that's multiplication.",
+        solution: [k + " teams × 11 players = " + (11 * k), "Trick: 10 × " + k + " = " + (10 * k) + ", then " + (10 * k) + " + " + k + " = " + (11 * k), "Answer: " + 11 * k],
+        hint: { kind: "array", rows: k, cols: 11 }, sig: "mult:11x" + k, extras: [11 + k, 10 * k] });
+    }
+    if (tier === "challenge" && chance(0.55)) {
+      // missing factor
+      a = ri(3, 9); b = ri(4, 12);
+      var p = a * b;
+      return mq({ skill: "mult", tier: tier, prompt: a + " × ? = " + p, answer: b, expr: p + "/" + a,
+        explain: "Think: " + a + " times what number makes " + p + "? You can divide: " + p + " ÷ " + a + ".",
+        solution: [p + " ÷ " + a + " = " + b, "Check: " + a + " × " + b + " = " + p, "Answer: " + b],
+        hint: { kind: "groups", total: p, groups: a }, sig: "mf:" + a + "x" + b, extras: [b + 1, b - 1, p - a] });
+    }
+    if (tier === "easy") { a = ri(2, 5); b = ri(3, 10); }
+    else if (tier === "standard") {
+      if (chance(0.6)) { a = ri(3, 10); b = ri(3, 10); }
+      else { a = ri(12, 45); b = ri(2, 5); }
+    } else { a = ri(24, 89); b = ri(3, 9); }
+    var ans = a * b, sol, hint;
+    if (a >= 11) {
+      var tens = Math.floor(a / 10) * 10, ones = a % 10;
+      sol = ["Split " + a + " into " + tens + " + " + ones, tens + " × " + b + " = " + tens * b, ones + " × " + b + " = " + ones * b, tens * b + " + " + ones * b + " = " + ans, "Answer: " + ans];
+      hint = { kind: "area", tens: tens, ones: ones, m: b };
+    } else {
+      sol = [a + " × " + b + " means " + a + " groups of " + b, "Skip count by " + b + ": " + skipList(b, a), "Answer: " + ans];
+      hint = { kind: "array", rows: a, cols: b };
+    }
+    var prompt = a + " × " + b + " = ?";
+    if (theme === "hero" && chance(0.5)) prompt = "The hero rescues " + b + " cats from each of " + a + " rooftops. How many cats is that?";
+    if (theme === "wrestling" && chance(0.5)) prompt = "There are " + a + " rows in the arena with " + b + " fans in each row. How many fans?";
+    return mq({ skill: "mult", tier: tier, prompt: prompt, answer: ans, expr: a + "*" + b,
+      explain: a >= 11 ? "Split the bigger number into tens and ones, multiply each part, then add." : "Picture " + a + " rows with " + b + " in each row, or skip count by " + b + ".",
+      solution: sol, hint: hint, sig: "mult:" + a + "x" + b, extras: [a + b, ans + b, ans - b] });
+  };
+  function skipList(step, times) { var out = []; for (var i = 1; i <= times; i++) out.push(step * i); return out.join(", "); }
+  MATH.div = function (tier, theme) {
+    var d, q, n;
+    if (tier === "challenge" && chance(0.4)) {
+      d = ri(3, 9); q = ri(4, 12); n = d * q;
+      return mq({ skill: "div", tier: tier, prompt: "? ÷ " + d + " = " + q, answer: n, expr: d + "*" + q,
+        explain: "Division and multiplication are a team. If ? ÷ " + d + " = " + q + ", then ? = " + q + " × " + d + ".",
+        solution: [q + " × " + d + " = " + n, "Check: " + n + " ÷ " + d + " = " + q, "Answer: " + n],
+        hint: { kind: "array", rows: d, cols: q }, sig: "md:" + d + ":" + q, extras: [n + d, q + d, n - q] });
+    }
+    if (tier === "easy") { d = pick([2, 5, 10]); q = ri(2, 9); }
+    else if (tier === "standard") { d = ri(3, 9); q = ri(3, 10); }
+    else { d = ri(3, 8); q = ri(12, 32); }
+    n = d * q;
+    var prompt = n + " ÷ " + d + " = ?";
+    if (theme === "soccer" && chance(0.6)) prompt = "Coach has " + n + " cones. She puts them in " + d + " equal rows. How many cones are in each row?";
+    else if (theme === "basketball" && chance(0.6)) prompt = "A player scored " + n + " points in " + d + " games, the same number each game. How many points per game?";
+    else if (theme === "hero" && chance(0.5)) prompt = n + " citizens need a ride. Each rescue jet holds " + d + ". How many jet trips are needed?";
+    var sol, hint;
+    if (q > 10) {
+      var big = 10 * d, rest = n - big;
+      sol = ["Break " + n + " into " + big + " + " + rest, big + " ÷ " + d + " = 10", rest + " ÷ " + d + " = " + (q - 10), "10 + " + (q - 10) + " = " + q, "Answer: " + q];
+      hint = { kind: "steps", steps: ["Break " + n + " into " + big + " + " + rest + ".", "How many " + d + "s are in each part?"] };
+    } else {
+      sol = ["Think: " + d + " × ? = " + n, d + " × " + q + " = " + n, "Answer: " + q];
+      hint = { kind: "groups", total: n, groups: d };
+    }
+    return mq({ skill: "div", tier: tier, prompt: prompt, answer: q, expr: n + "/" + d,
+      explain: "Ask yourself: " + d + " times what number equals " + n + "?",
+      solution: sol, hint: hint, sig: "div:" + n + "/" + d, extras: [q + 1, q - 1, n - d] });
+  };
+  MATH.frac = function (tier, theme) {
+    var r = rand(), n, d;
+    if (tier === "easy") {
+      d = pick([2, 3, 4, 5, 6, 8]); n = ri(1, d - 1);
+      return mq({ skill: "frac", tier: tier, prompt: "What fraction of the power bar is filled?", visual: { kind: "fracbar", bars: [{ n: n, d: d }] },
+        answer: fstr(n, d), type: "frac", expr: n + "/" + d, equiv: false,
+        explain: "Count the filled parts for the top number. Count ALL the parts for the bottom number.",
+        solution: [n + (n === 1 ? " part is" : " parts are") + " filled", "There are " + d + " parts in all", "Answer: " + fstr(n, d)],
+        hint: { kind: "fracbar", bars: [{ n: n, d: d }] }, sig: "fb:" + n + "/" + d, mcOnly: true });
+    }
+    if (tier === "standard") {
+      if (r < 0.3) { // fraction of shots
+        d = pick([4, 5, 6, 8, 10]); n = ri(1, d - 1);
+        var who = theme === "basketball" ? ["free throws", "made"] : ["shots", "went in"];
+        var prompt = theme === "basketball" ? "You took " + d + " free throws and made " + n + ". What fraction of your free throws did you make?" : "Our striker took " + d + " shots on goal and " + n + " went in. What fraction of her shots went in?";
+        var s = simp(n, d);
+        return mq({ skill: "frac", tier: tier, theme: theme, prompt: prompt, answer: fstr(n, d), type: "frac", expr: n + "/" + d, equiv: true,
+          explain: "The top number is how many " + who[1] + ". The bottom number is how many " + who[0] + " in all.",
+          solution: [n + " " + who[1] + " out of " + d + " " + who[0], "Fraction: " + fstr(n, d) + (s.d !== d ? " (same as " + fstr(s.n, s.d) + ")" : ""), "Answer: " + fstr(n, d)],
+          hint: { kind: "fracbar", bars: [{ n: n, d: d }] }, sig: "fs:" + n + "/" + d });
+      }
+      if (r < 0.55) { // fraction of a set
+        d = pick([2, 3, 4, 5]); var k = ri(2, 6), total = d * k; n = d === 2 ? 1 : ri(1, d - 1);
+        var ans = n * k;
+        return mq({ skill: "frac", tier: tier, prompt: "What is " + fstr(n, d) + " of " + total + "?", answer: ans, expr: total + "/" + d + "*" + n,
+          explain: "Split " + total + " into " + d + " equal groups, then take " + n + " of those groups.",
+          solution: [total + " ÷ " + d + " = " + k + " in each group", n + (n === 1 ? " group" : " groups") + " × " + k + " = " + ans, "Answer: " + ans],
+          hint: { kind: "groups", total: total, groups: d, take: n }, sig: "fo:" + n + "/" + d + ":" + total, extras: [k, total - ans, ans + k] });
+      }
+      if (r < 0.78) { // compare same denominator
+        d = pick([4, 5, 6, 8, 10, 12]); var a = ri(1, d - 1), b = ri(1, d - 1);
+        var sym = a > b ? ">" : a < b ? "<" : "=";
+        return mq({ skill: "frac", tier: tier, prompt: "Which symbol goes in the box?  " + fstr(a, d) + "  ☐  " + fstr(b, d), answer: sym, type: "sym", expr: null,
+          choices: [">", "<", "="], mcOnly: true,
+          explain: "When the bottom numbers match, the pieces are the same size. Compare the top numbers.",
+          solution: ["Both have " + d + " equal parts", a + (sym === ">" ? " is more than " : sym === "<" ? " is less than " : " is the same as ") + b, "Answer: " + fstr(a, d) + " " + sym + " " + fstr(b, d)],
+          hint: { kind: "fracbar", bars: [{ n: a, d: d }, { n: b, d: d }] }, sig: "cs:" + a + "/" + d + ":" + b });
+      }
+      d = pick([5, 6, 8, 10, 12]); var x = ri(1, d - 2), y = ri(1, d - 1 - x);
+      return mq({ skill: "frac", tier: tier, prompt: fstr(x, d) + " + " + fstr(y, d) + " = ?   (write it like 3/8)", answer: fstr(x + y, d), type: "frac", expr: (x + y) + "/" + d, equiv: true,
+        explain: "Same-size pieces! Add the top numbers. The bottom number stays the same.",
+        solution: [x + " + " + y + " = " + (x + y) + " pieces", "The pieces are still " + d + "ths", "Answer: " + fstr(x + y, d)],
+        hint: { kind: "fracbar", bars: [{ n: x, d: d }, { n: y, d: d }, { n: x + y, d: d }] }, sig: "fa:" + x + "+" + y + "/" + d });
+    }
+    // challenge
+    if (r < 0.4) { // equivalent fractions missing numerator
+      d = pick([2, 3, 4, 5, 6]); n = ri(1, d - 1); var m = ri(2, 4), D2 = d * m;
+      return mq({ skill: "frac", tier: tier, prompt: fstr(n, d) + " = ? / " + D2, answer: n * m, expr: n + "*" + m,
+        explain: "What did you multiply " + d + " by to get " + D2 + "? Multiply the top by the same number.",
+        solution: [d + " × " + m + " = " + D2, n + " × " + m + " = " + (n * m), "Answer: " + fstr(n, d) + " = " + fstr(n * m, D2)],
+        hint: { kind: "fracbar", bars: [{ n: n, d: d }, { n: n * m, d: D2 }] }, sig: "eq:" + n + "/" + d + ":" + D2, extras: [n + m, D2 - n, n * m + 1] });
+    }
+    if (r < 0.7) { // compare unlike denominators (one is multiple of the other)
+      var d1 = pick([2, 3, 4]), mm = pick([2, 3]), d2 = d1 * mm, a1 = ri(1, d1 - 1), b2 = ri(1, d2 - 1);
+      var a2 = a1 * mm, sym2 = a2 > b2 ? ">" : a2 < b2 ? "<" : "=";
+      return mq({ skill: "frac", tier: tier, prompt: "Which symbol goes in the box?  " + fstr(a1, d1) + "  ☐  " + fstr(b2, d2), answer: sym2, type: "sym", expr: null,
+        choices: [">", "<", "="], mcOnly: true,
+        explain: "Make the bottom numbers match first. Change " + fstr(a1, d1) + " into " + d2 + "ths.",
+        solution: [fstr(a1, d1) + " = " + fstr(a2, d2), "Compare " + fstr(a2, d2) + " and " + fstr(b2, d2), "Answer: " + fstr(a1, d1) + " " + sym2 + " " + fstr(b2, d2)],
+        hint: { kind: "fracbar", bars: [{ n: a1, d: d1 }, { n: b2, d: d2 }] }, sig: "cu:" + a1 + "/" + d1 + ":" + b2 + "/" + d2 });
+    }
+    d = pick([3, 4, 5, 8]); n = ri(2, d - 1); var k2 = ri(3, 9), tot = d * k2;
+    return mq({ skill: "frac", tier: tier, prompt: (theme === "soccer" ? "The season has " + tot + " games. The Comets won " + fstr(n, d) + " of them. How many games did they win?" : "What is " + fstr(n, d) + " of " + tot + "?"),
+      answer: n * k2, expr: tot + "/" + d + "*" + n,
+      explain: "First find 1/" + d + " by dividing by " + d + ". Then multiply by " + n + ".",
+      solution: [tot + " ÷ " + d + " = " + k2, k2 + " × " + n + " = " + (n * k2), "Answer: " + (n * k2)],
+      hint: { kind: "groups", total: tot, groups: d, take: n }, sig: "fo:" + n + "/" + d + ":" + tot, extras: [k2, tot - n * k2, n * k2 + k2] });
+  };
+  // multi-step word problems by theme
+  var WORD_T = {
+    soccer: [
+      function (tier) {
+        var a = ri(1, 4), b = ri(1, 4), c = ri(0, a + b - 1);
+        if (tier === "challenge") { var e = ri(1, 3); var c2 = ri(0, a + b + e - 1);
+          return { p: "The Comets scored " + a + " goals in the first half, " + b + " in the second half, and " + e + " in overtime. The Rockets scored " + c2 + ". How many more goals did the Comets score?", ans: a + b + e - c2, expr: "(" + a + "+" + b + "+" + e + ")-" + c2,
+            steps: ["Comets: " + a + " + " + b + " + " + e + " = " + (a + b + e), (a + b + e) + " − " + c2 + " = " + (a + b + e - c2)], ex: [a + b + e, a + b + e + c2] }; }
+        return { p: "The Comets scored " + a + " goals in the first half and " + b + " in the second half. The Rockets scored " + c + " goals. How many more goals did the Comets score?", ans: a + b - c, expr: "(" + a + "+" + b + ")-" + c,
+          steps: ["Comets: " + a + " + " + b + " = " + (a + b), (a + b) + " − " + c + " = " + (a + b - c)], ex: [a + b, a + b + c] };
+      },
+      function (tier) {
+        var p = ri(3, tier === "challenge" ? 9 : 6), q = ri(4, tier === "challenge" ? 12 : 8), g = ri(2, 9);
+        return { p: "Coach buys " + p + " bags of soccer balls with " + q + " balls in each bag. " + g + " balls get kicked over the fence. How many balls are left?", ans: p * q - g, expr: p + "*" + q + "-" + g,
+          steps: [p + " × " + q + " = " + p * q + " balls", p * q + " − " + g + " = " + (p * q - g)], ex: [p * q, p + q - g, p * q + g] };
+      },
+      function (tier) {
+        var k = ri(2, 4), subs = ri(2, 5);
+        return { p: "Each soccer team has 11 players on the field and " + subs + " players on the bench. How many players are on " + k + " teams?", ans: (11 + subs) * k, expr: "(11+" + subs + ")*" + k,
+          steps: ["One team: 11 + " + subs + " = " + (11 + subs), (11 + subs) + " × " + k + " = " + (11 + subs) * k], ex: [11 * k, 11 * k + subs, 11 + subs] };
+      }
+    ],
+    basketball: [
+      function (tier) {
+        var twos = tier === "challenge" ? ri(2, 3) : 2, D = 3 + 2 * twos + ri(0, 6);
+        var left = D - 3 - 2 * twos;
+        return { p: "You're down by " + D + ". You score a 3-pointer, then " + twos + " baskets worth 2 points each. How many points behind are you now? (Type 0 if the game is tied.)", ans: left, expr: D + "-3-2*" + twos,
+          steps: ["Points you scored: 3 + " + twos + " × 2 = " + (3 + 2 * twos), D + " − " + (3 + 2 * twos) + " = " + left + (left === 0 ? " — tie game!" : " behind")], ex: [D - 3, left + 2, D - 2 * twos] };
+      },
+      function (tier) {
+        var a = ri(3, tier === "challenge" ? 12 : 8), b = ri(2, tier === "challenge" ? 9 : 6);
+        var ft = tier === "challenge" ? ri(2, 7) : 0;
+        return { p: "The Sky Hawks made " + a + " two-point baskets and " + b + " three-pointers" + (ft ? ", plus " + ft + " free throws worth 1 point each" : "") + ". How many points did they score?", ans: 2 * a + 3 * b + ft, expr: "2*" + a + "+3*" + b + "+" + ft,
+          steps: [a + " × 2 = " + 2 * a, b + " × 3 = " + 3 * b].concat(ft ? [2 * a + " + " + 3 * b + " + " + ft + " = " + (2 * a + 3 * b + ft)] : [2 * a + " + " + 3 * b + " = " + (2 * a + 3 * b)]), ex: [a + b, 2 * a + 2 * b, 3 * a + 2 * b] };
+      },
+      function (tier) {
+        var x = ri(40, 70), y = x - ri(1, 6), s = ri(5, 12), t = ri(1, s - 1);
+        return { p: "The score is " + x + " to " + y + " — you're ahead. You score " + s + " more points and the other team scores " + t + ". How many points are you ahead now?", ans: x + s - y - t, expr: "(" + x + "+" + s + ")-(" + y + "+" + t + ")",
+          steps: ["You: " + x + " + " + s + " = " + (x + s), "Them: " + y + " + " + t + " = " + (y + t), (x + s) + " − " + (y + t) + " = " + (x + s - y - t)], ex: [x - y, s - t, x + s - y] };
+      }
+    ],
+    hero: [
+      function (tier) {
+        var u = pick([5, 10, 15, 20]), k = ri(2, Math.floor(90 / u));
+        return { p: "The gadget battery starts at 100%. Each grappling swing uses " + u + "%. After " + k + " swings, how much battery is left (in %)?", ans: 100 - u * k, expr: "100-" + u + "*" + k,
+          steps: [k + " swings × " + u + "% = " + u * k + "%", "100 − " + u * k + " = " + (100 - u * k) + "%"], ex: [u * k, 100 - u - k, 100 - u] };
+      },
+      function (tier) {
+        var a = ri(2, 6), b = ri(3, tier === "challenge" ? 9 : 6), c = ri(2, 9);
+        return { p: "The hero rescues " + a + " cats from each of " + b + " buildings, then " + c + " more cats from a tall tree. How many cats are rescued?", ans: a * b + c, expr: a + "*" + b + "+" + c,
+          steps: [a + " × " + b + " = " + a * b, a * b + " + " + c + " = " + (a * b + c)], ex: [a + b + c, a * b, a * (b + c)] };
+      },
+      function (tier) {
+        var g = ri(3, 6), per = ri(4, 9), stop = ri(1, g - 1);
+        return { p: "A robot army of " + g * per + " robots marches in " + g + " equal groups. The hero stops " + stop + " of the groups. How many robots are stopped?", ans: per * stop, expr: g * per + "/" + g + "*" + stop,
+          steps: [g * per + " ÷ " + g + " = " + per + " robots per group", per + " × " + stop + " = " + per * stop], ex: [per, g * per - per * stop, stop * g] };
+      }
+    ],
+    wrestling: [
+      function (tier) {
+        var r = ri(4, tier === "challenge" ? 15 : 9), s = ri(6, 12), e = ri(2, 9);
+        return { p: "The arena has " + r + " rows with " + s + " seats in each row. " + e + " seats are empty. How many fans are in their seats?", ans: r * s - e, expr: r + "*" + s + "-" + e,
+          steps: [r + " × " + s + " = " + r * s + " seats", r * s + " − " + e + " = " + (r * s - e) + " fans"], ex: [r * s, r * s + e, r + s] };
+      },
+      function (tier) {
+        var b = ri(3, 8), sp = ri(4, 10), x = ri(5, 20);
+        return { p: "The champ's entrance has " + b + " firework bursts with " + sp + " sparks each, then " + x + " more sparks for the finale. How many sparks in all?", ans: b * sp + x, expr: b + "*" + sp + "+" + x,
+          steps: [b + " × " + sp + " = " + b * sp, b * sp + " + " + x + " = " + (b * sp + x)], ex: [b + sp + x, b * sp, b * (sp + x)] };
+      },
+      function (tier) {
+        var t = ri(3, 6), ea = ri(25, 60), sold = ri(10, 40);
+        return { p: "The team brings " + t + " boxes of " + ea + " T-shirts to the show. They sell " + sold + " shirts. How many shirts are left?", ans: t * ea - sold, expr: t + "*" + ea + "-" + sold,
+          steps: [t + " × " + ea + " = " + t * ea, t * ea + " − " + sold + " = " + (t * ea - sold)], ex: [t * ea, t * ea + sold, t + ea - sold] };
+      }
+    ]
+  };
+  MATH.word = function (tier, theme) {
+    var th = WORD_T[theme] ? theme : pick(["soccer", "basketball", "hero", "wrestling"]);
+    if (tier === "easy") { // easier: single step
+      var a = ri(3, 9), b = ri(2, 5);
+      return mq({ skill: "word", tier: tier, theme: th, prompt: "There are " + a + " teams with " + b + " " + (th === "basketball" ? "players on the bench" : "helpers") + " each. How many in all?", answer: a * b, expr: a + "*" + b,
+        explain: "Equal groups means multiply: " + a + " groups of " + b + ".", solution: [a + " × " + b + " = " + a * b, "Answer: " + a * b],
+        hint: { kind: "array", rows: a, cols: b }, sig: "we:" + a + "x" + b, typeOnly: false, extras: [a + b] });
+    }
+    var i = ri(0, WORD_T[th].length - 1), t = WORD_T[th][i](tier);
+    return mq({ skill: "word", tier: tier, theme: th, prompt: t.p, answer: t.ans, expr: t.expr,
+      explain: "This one has two steps. Find the first number you need, then use it to finish.",
+      solution: t.steps.concat(["Answer: " + t.ans]), hint: { kind: "steps", steps: t.steps.map(function (s, k) { return "Step " + (k + 1) + ": " + s.replace(/=\s*-?[\d,]+.*$/, "= ?"); }) },
+      sig: "w:" + th + i + ":" + t.p, extras: t.ex });
+  };
+  // Clutch Court final possession: multi-step
+  function finalPossession(tier) {
+    var D = ri(2, 6), a = 3, b = 2, ft = ri(1, 2), opp = ri(1, 3);
+    if (tier === "challenge") { b = 2 * ri(2, 3); }
+    var lead = a + b + ft - opp - D;
+    while (lead <= 0) { ft += 1; lead = a + b + ft - opp - D; }
+    var p = "FINAL POSSESSION! You're down by " + D + ". Your team hits a 3-pointer. The other team answers with " + opp + " point" + (opp > 1 ? "s" : "") + ". Then you score " + (b === 2 ? "a 2-point layup" : b / 2 + " layups worth 2 points each") + " and make " + ft + " free throw" + (ft > 1 ? "s" : "") + " (1 point each). Who wins, and by how many points? Type how many points YOU win by.";
+    var steps = ["Your points: 3 + " + b + " + " + ft + " = " + (a + b + ft), "Their points: " + opp, "Change in score: " + (a + b + ft) + " − " + opp + " = " + (a + b + ft - opp), "You started " + D + " behind: " + (a + b + ft - opp) + " − " + D + " = " + lead];
+    var q = mq({ skill: "word", tier: tier === "challenge" ? "challenge" : "standard", theme: "basketball", prompt: p, answer: lead, expr: "3+" + b + "+" + ft + "-" + opp + "-" + D,
+      explain: "Add up everything your team scored, subtract what they scored, then remember you started behind.",
+      solution: steps.concat(["You win by " + lead + "!", "Answer: " + lead]), hint: { kind: "steps", steps: ["Add all YOUR points.", "Subtract THEIR points.", "Subtract the " + D + " points you were behind at the start."] },
+      sig: "fp:" + p, typeOnly: true });
+    q.final = true;
+    return q;
+  }
+
+  // ---------- spelling ----------
+  var STD = D.WORDS.filter(function (w) { return w.t === "s"; });
+  var CH = D.WORDS.filter(function (w) { return w.t === "c"; });
+  var ALLW = D.WORDS.map(function (w) { return w.w; });
+  function wordPool(tier, theme) {
+    var pool = tier === "challenge" ? CH : tier === "easy" ? STD.filter(function (w) { return w.w.length <= 5; }) : STD;
+    if (theme && chance(0.6)) {
+      var themed = pool.filter(function (w) { return w.th === theme || (w.th === "sports" && (theme === "soccer" || theme === "basketball")); });
+      if (themed.length >= 4) pool = themed;
+    }
+    return pool;
+  }
+  function sortedLetters(s) { return s.split("").sort().join(""); }
+  function scrambleWord(w) {
+    var s = w, n = 0;
+    while ((s === w) && n < 50) { s = shuffle(w.split("")).join(""); n++; }
+    return s;
+  }
+  function canForm(word, pool) { // pool: string of letters
+    var p = pool.split("");
+    for (var i = 0; i < word.length; i++) { var k = p.indexOf(word[i]); if (k < 0) return false; p.splice(k, 1); }
+    return true;
+  }
+  function genScramble(tier, theme) {
+    var e = pick(wordPool(tier, theme)), w = e.w, letters = w, extra = null;
+    if (tier === "challenge" || (tier === "standard" && w.length <= 5 && chance(0.25))) {
+      var alpha = "abcdefghiklmnoprstuy".split("").filter(function (ch) { return true; });
+      for (var tries = 0; tries < 40; tries++) {
+        var x = pick(alpha);
+        var pool = w + x;
+        // the decoy must not let another word from our bank of the same length be built
+        var clash = ALLW.some(function (o) { return o !== w && o.length === w.length && canForm(o, pool); });
+        if (!clash) { extra = x; break; }
+      }
+      if (extra) letters = w + extra;
+    }
+    var tiles = scrambleWord(letters);
+    if (tiles.slice(0, w.length) === w) tiles = scrambleWord(letters);
+    return { subject: "spell", skill: "scramble", tier: tier, type: "scramble", answer: w, tiles: tiles, extra: extra, clue: e.c, sentence: e.s,
+      prompt: extra ? "Unscramble to build the word. One letter is a decoy — leave it out!" : "Unscramble the letters to build the word.",
+      explain: "Read the clue again. The word starts with \"" + w[0].toUpperCase() + "\" and has " + w.length + " letters.",
+      solution: ["The word is " + w.toUpperCase() + "."].concat(extra ? ["The decoy letter was " + extra.toUpperCase() + "."] : []), sig: "sc:" + w };
+  }
+  function hideIdx(w, count) {
+    var vowels = [], other = [];
+    for (var i = 1; i < w.length; i++) { if ("aeiouy".indexOf(w[i]) >= 0) vowels.push(i); else other.push(i); }
+    var idx = shuffle(vowels).concat(shuffle(other)).slice(0, Math.min(count, w.length - 2));
+    return idx.sort(function (a, b) { return a - b; });
+  }
+  function patternMatches(pattern, word) {
+    if (pattern.length !== word.length) return false;
+    for (var i = 0; i < pattern.length; i++) if (pattern[i] !== "_" && pattern[i] !== word[i]) return false;
+    return true;
+  }
+  function genMissing(tier, theme) {
+    for (var tries = 0; tries < 30; tries++) {
+      var e = pick(wordPool(tier, theme)), w = e.w;
+      var count = tier === "easy" ? 1 : tier === "standard" ? 2 : 3;
+      var idx = hideIdx(w, count);
+      var pattern = w.split("").map(function (ch, i) { return idx.indexOf(i) >= 0 ? "_" : ch; }).join("");
+      var others = ALLW.filter(function (o) { return o !== w && patternMatches(pattern, o); });
+      if (others.length) continue;
+      return { subject: "spell", skill: "missing", tier: tier, type: "missing", answer: w, pattern: pattern, hidden: idx, clue: e.c, sentence: e.s,
+        prompt: "Fill in the missing letters. Use the sentence to figure out the word.",
+        explain: "Say the word slowly and listen for each sound. The clue: " + e.c + ".",
+        solution: ["The word is " + w.toUpperCase() + "."], sig: "mi:" + w };
+    }
+    return genScramble(tier, theme);
+  }
+  function genDictation(tier, theme) {
+    var e = pick(wordPool(tier, theme)), w = e.w;
+    return { subject: "spell", skill: "dictation", tier: tier, type: "dictation", answer: w, clue: e.c, sentence: e.s,
+      prompt: "Spell the word. Tap \"Hear the word\" or use the written clue.",
+      explain: "It has " + w.length + " letters and starts with \"" + w[0].toUpperCase() + "\". Sound it out piece by piece.",
+      solution: ["The word is " + w.toUpperCase() + ".", "Spelled: " + w.toUpperCase().split("").join("-")], sig: "di:" + w };
+  }
+  function genHomophone(tier) {
+    var pool = D.HOMOPHONES.filter(function (h) { return tier === "challenge" ? h.t === "c" : h.t === "s"; });
+    var h = pick(pool);
+    return { subject: "spell", skill: "homophone", tier: tier, type: "homophone", answer: h.a, choices: shuffle(h.o), sentence: h.s,
+      prompt: "Sound-alike showdown! Which word fits the sentence?",
+      explain: "These words sound the same but mean different things. Read the whole sentence and think about the meaning.",
+      solution: [h.why, "Answer: " + h.a], sig: "ho:" + h.s };
+  }
+  // ---------- word search ----------
+  function makeWordSearch(words, size, dirs) {
+    dirs = dirs || [[0, 1], [1, 0], [1, 1]];
+    for (var attempt = 0; attempt < 200; attempt++) {
+      var grid = [], placements = [], ok = true;
+      for (var r = 0; r < size; r++) { grid.push([]); for (var c = 0; c < size; c++) grid[r].push(""); }
+      var ordered = words.slice().sort(function (a, b) { return b.length - a.length; });
+      for (var wi = 0; wi < ordered.length && ok; wi++) {
+        var w = ordered[wi].toUpperCase(), placed = false;
+        for (var t = 0; t < 150 && !placed; t++) {
+          var dir = pick(dirs), dr = dir[0], dc = dir[1];
+          var span = w.length - 1;
+          if (span > size - 1) break;
+          var r0 = dr < 0 ? ri(span, size - 1) : ri(0, size - 1 - dr * span), c0 = dc < 0 ? ri(span, size - 1) : ri(0, size - 1 - dc * span), fits = true;
+          for (var k = 0; k < w.length; k++) { var cell = grid[r0 + dr * k][c0 + dc * k]; if (cell && cell !== w[k]) { fits = false; break; } }
+          if (!fits) continue;
+          for (k = 0; k < w.length; k++) grid[r0 + dr * k][c0 + dc * k] = w[k];
+          placements.push({ word: w, r: r0, c: c0, dr: dr, dc: dc });
+          placed = true;
+        }
+        if (!placed) ok = false;
+      }
+      if (!ok) continue;
+      var fill = "ABCDEFGHIJKLMNOPRSTUVWY";
+      for (r = 0; r < size; r++) for (c = 0; c < size; c++) if (!grid[r][c]) grid[r][c] = fill[Math.floor(rand() * fill.length)];
+      return { grid: grid, placements: placements, size: size };
+    }
+    return null;
+  }
+  function readLine(grid, r1, c1, r2, c2) {
+    var dr = Math.sign(r2 - r1), dc = Math.sign(c2 - c1);
+    var lr = Math.abs(r2 - r1), lc = Math.abs(c2 - c1);
+    if (!(lr === 0 || lc === 0 || lr === lc)) return null;
+    var len = Math.max(lr, lc) + 1, s = "";
+    for (var k = 0; k < len; k++) s += grid[r1 + dr * k][c1 + dc * k];
+    return s;
+  }
+  function genWordSearch(tier, big) {
+    var size = big ? 9 : tier === "challenge" ? 7 : 6, count = big ? 6 : tier === "challenge" ? 4 : 3;
+    var pool = D.SEARCH_WORDS.filter(function (w) { return w.length <= size && w.length >= 3; });
+    var dirs = tier === "challenge" || big ? [[0, 1], [1, 0], [1, 1], [-1, 1]] : [[0, 1], [1, 0], [1, 1]];
+    for (var a = 0; a < 20; a++) {
+      var words = shuffle(pool).slice(0, count);
+      var ws = makeWordSearch(words, size, dirs);
+      if (ws) return { subject: "spell", skill: "wordsearch", tier: tier, type: "wordsearch", words: words.map(function (w) { return w.toUpperCase(); }), grid: ws.grid, placements: ws.placements, size: size,
+        prompt: "Find every hero word! Tap the FIRST letter, then the LAST letter.", explain: "Words go across, down, or on a slant. Look for the first letter of each word.",
+        solution: ["Look at the highlighted words."], sig: "ws:" + words.join(","), answer: words.join(",") };
+    }
+    return null;
+  }
+  // ---------- wordle ----------
+  var WORDLE_VALID = {};
+  D.WORDLE_ANSWERS.concat(D.WORDLE_VALID_EXTRA).forEach(function (w) { if (/^[a-z]{5}$/.test(w)) WORDLE_VALID[w] = true; });
+  D.WORDS.forEach(function (w) { if (w.w.length === 5) WORDLE_VALID[w.w] = true; });
+  function wordleScore(guess, answer) {
+    guess = guess.toLowerCase(); answer = answer.toLowerCase();
+    var res = [0, 0, 0, 0, 0].map(function () { return "absent"; }), counts = {};
+    for (var i = 0; i < 5; i++) { if (guess[i] === answer[i]) res[i] = "correct"; else counts[answer[i]] = (counts[answer[i]] || 0) + 1; }
+    for (i = 0; i < 5; i++) { if (res[i] === "correct") continue; var ch = guess[i]; if (counts[ch] > 0) { res[i] = "present"; counts[ch]--; } }
+    return res;
+  }
+  function isValidGuess(w) { return !!WORDLE_VALID[String(w).toLowerCase()]; }
+  function genWordle() {
+    var w = pick(D.WORDLE_ANSWERS);
+    return { subject: "spell", skill: "wordle", tier: "standard", type: "wordle", answer: w, sig: "wo:" + w };
+  }
+
+  // ---------- generator entry ----------
+  function generate(skill, tier, theme, usedSigs, opts) {
+    usedSigs = usedSigs || {};
+    opts = opts || {};
+    var q = null;
+    for (var tries = 0; tries < 40; tries++) {
+      if (opts.final) q = finalPossession(tier);
+      else if (skill === "scramble") q = genScramble(tier, theme);
+      else if (skill === "missing") q = genMissing(tier, theme);
+      else if (skill === "dictation") q = genDictation(tier, theme);
+      else if (skill === "homophone") q = genHomophone(tier === "easy" ? "standard" : tier);
+      else if (skill === "wordsearch") q = genWordSearch(tier, opts.big);
+      else if (skill === "wordle") q = genWordle();
+      else q = MATH[skill](tier, theme);
+      if (q && !usedSigs[q.sig] && !usedSigs[q.subject + "W:" + q.answer] ) break;
+    }
+    if (q) { usedSigs[q.sig] = true; if (q.subject === "spell" && q.type !== "homophone") usedSigs["spellW:" + q.answer] = true; }
+    return q;
+  }
+  function checkAnswer(q, input) {
+    if (q.subject === "spell") return String(input).trim().toLowerCase() === String(q.answer).toLowerCase();
+    if (q.answerType === "int") { var v = parseIntAnswer(input); return v !== null && v === +q.answer; }
+    if (q.answerType === "sym") return String(input).trim() === q.answer;
+    if (q.answerType === "frac") {
+      var a = parseFrac(input), b = parseFrac(q.answer);
+      if (!a) return false;
+      if (q.equiv) return a.n * b.d === b.n * a.d;
+      return a.n === b.n && a.d === b.d;
+    }
+    return false;
+  }
+
+  // ---------- round plans ----------
+  var ARENAS = {
+    rooftop: { name: "Rooftop Rescue", theme: "hero" },
+    main: { name: "Main Event", theme: "wrestling" },
+    soccer: { name: "Soccer Shootout", theme: "soccer" },
+    court: { name: "Clutch Court", theme: "basketball" }
+  };
+  function planRound(arena, mode) {
+    var spellSets = {
+      rooftop: ["scramble", "scramble", "missing", "scramble", "dictation", "scramble", "scramble", "missing"],
+      main: ["scramble", "homophone", "missing", "dictation", "homophone", "scramble", "missing", "dictation"],
+      soccer: ["scramble", "homophone", "missing", "dictation", "scramble", "homophone", "missing", "dictation"],
+      court: ["missing", "homophone", "scramble", "dictation", "homophone", "missing", "scramble", "dictation"]
+    };
+    var mathSets = {
+      rooftop: ["mult", "add", "div", "frac", "sub", "word", "mult", "div"],
+      main: ["add", "mult", "sub", "div", "frac", "word", "mult", "add"],
+      soccer: ["mult", "div", "word", "frac", "mult", "word", "div", "frac"],
+      court: ["sub", "add", "frac", "word", "mult", "div", "word", "sub"]
+    };
+    var sp = spellSets[arena].slice(), ma = mathSets[arena].slice();
+    // light shuffle of math order, keep first spelling (scramble for rooftop)
+    ma = [ma[0]].concat(shuffle(ma.slice(1)));
+    if ((arena === "rooftop" || arena === "main") && chance(0.5)) sp[ri(2, 5)] = "wordsearch";
+    var slots = [];
+    for (var i = 0; i < 8; i++) {
+      var subj = mode === "spell" ? "spell" : mode === "math" ? "math" : (i % 2 === 0 ? "spell" : "math");
+      var skill = subj === "spell" ? sp[i] : ma[i];
+      if (mode === "mixed") skill = subj === "spell" ? sp[Math.floor(i / 2) * 2 % 8] : ma[Math.floor(i / 2)];
+      slots.push({ subject: subj, skill: skill });
+    }
+    if (mode === "mixed") { // de-duplicate spelling skills in mixed
+      var spellOrder = arena === "rooftop" ? ["scramble", "missing", "scramble", "dictation"] : shuffle(["scramble", "homophone", "missing", "dictation"]);
+      var si = 0; slots.forEach(function (s) { if (s.subject === "spell") s.skill = spellOrder[si++ % spellOrder.length]; });
+    }
+    return slots;
+  }
+
+  // ---------- adaptive engine ----------
+  function newSkillStat() { return { attempts: 0, firstTry: 0, correct: 0, missed: 0, streak: 0, missStreak: 0, recent: [], last: 0, mastered: false, offer: null, best: 0 }; }
+  function recordAttempt(stats, skill, correct) {
+    // called for EVERY attempt (first or retry)
+    var s = stats[skill] || (stats[skill] = newSkillStat());
+    if (correct) { s.streak++; s.missStreak = 0; if (s.streak > s.best) s.best = s.streak; if (s.streak > 0 && s.streak % 3 === 0) s.offer = "harder"; }
+    else { s.streak = 0; s.missStreak++; if (s.missStreak >= 2) s.offer = "easier"; }
+    return s;
+  }
+  function recordQuestion(stats, skill, result) {
+    // result: 'first' | 'second' | 'missed'
+    var s = stats[skill] || (stats[skill] = newSkillStat());
+    s.attempts++; s.last = Date.now();
+    if (result === "first") { s.firstTry++; s.correct++; }
+    else if (result === "second") s.correct++;
+    else s.missed++;
+    s.recent.push(result === "missed" ? 0 : 1);
+    if (s.recent.length > 10) s.recent.shift();
+    var acc = s.recent.reduce(function (a, b) { return a + b; }, 0) / s.recent.length;
+    var newly = false;
+    if (!s.mastered && s.correct >= 8 && s.recent.length >= 8 && acc >= 0.8) { s.mastered = true; newly = true; }
+    return newly;
+  }
+  function consumeOffer(stats, skill) { var s = stats[skill]; if (!s) return null; var o = s.offer; s.offer = null; if (o === "easier") s.missStreak = 0; return o; }
+
+  // ---------- rewards ----------
+  var UNLOCKS = [
+    { id: "cape-storm", xp: 40, kind: "cape", name: "Storm Cape" },
+    { id: "banner-bolt", xp: 90, kind: "banner", name: "Lightning Stripes Banner" },
+    { id: "celeb-confetti", xp: 150, kind: "celebration", name: "Confetti Cannon" },
+    { id: "emblem-flame", xp: 220, kind: "emblem", name: "Flame Emblem" },
+    { id: "mask-visor", xp: 300, kind: "mask", name: "Cyber Visor" },
+    { id: "banner-stars", xp: 400, kind: "banner", name: "Starfield Banner" },
+    { id: "celeb-lightning", xp: 520, kind: "celebration", name: "Lightning Flex" },
+    { id: "gloves-power", xp: 650, kind: "gloves", name: "Power Gauntlets" },
+    { id: "emblem-crown", xp: 800, kind: "emblem", name: "Crown Emblem" },
+    { id: "banner-checker", xp: 1000, kind: "banner", name: "Checkered Champ Banner" },
+    { id: "celeb-fireworks", xp: 1200, kind: "celebration", name: "Fireworks Finale" },
+    { id: "mask-helm", xp: 1450, kind: "mask", name: "Titan Helm" },
+    { id: "boots-rocket", xp: 1750, kind: "boots", name: "Rocket Boots" },
+    { id: "cape-royal", xp: 2100, kind: "cape", name: "Royal Cape" },
+    { id: "banner-galaxy", xp: 2500, kind: "banner", name: "Galaxy Banner" },
+    { id: "celeb-spin", xp: 3000, kind: "celebration", name: "Tornado Spin" }
+  ];
+  var BADGES = {
+    "first-round": { name: "Rookie Debut", desc: "Finish your first round" },
+    "champ-belt": { name: "Title Holder", desc: "Win the Main Event" },
+    "hat-trick": { name: "Hat Trick", desc: "Score 3+ goals in one shootout" },
+    "buzzer": { name: "Buzzer Beater", desc: "Nail the final possession" },
+    "rescuer": { name: "Rooftop Rescuer", desc: "Complete a full rescue" },
+    "vault": { name: "Vault Cracker", desc: "Solve a Word Vault puzzle" },
+    "hunter": { name: "Word Hunter", desc: "Finish a full word search" },
+    "challenger": { name: "Challenge Accepted", desc: "Get a Challenge question right" },
+    "streak5": { name: "On Fire", desc: "5 correct in a row" },
+    "perfect": { name: "Flawless", desc: "Every answer right on the first try in a round" }
+  };
+  Object.keys(SKILLS).forEach(function (k) { BADGES["master-" + k] = { name: SKILLS[k].name + " Master", desc: "8+ correct with 80%+ of your last tries right" }; });
+  function level(xp) { return 1 + Math.floor(xp / 150); }
+  function unlockedFor(xp) { return UNLOCKS.filter(function (u) { return xp >= u.xp; }).map(function (u) { return u.id; }); }
+
+  // ---------- save ----------
+  var SAVE_KEY = "heroLeagueAcademy.v1";
+  function defaultSave() {
+    return {
+      v: 1, created: Date.now(),
+      hero: { name: "", primary: "#e63946", secondary: "#ffd23f", mask: "domino", emblem: "bolt", cape: "none", gloves: "basic", boots: "basic" },
+      settings: { mute: false, reducedMotion: null, timer: false, spellTier: "standard", mathTier: "standard", banner: "none", celebration: "starburst", speech: true },
+      xp: 0, rounds: 0, badges: [], unlocks: [], stats: {}, wins: { main: 0, soccer: 0, court: 0, rooftop: 0 }, log: []
+    };
+  }
+  function migrate(s) {
+    var d = defaultSave();
+    if (!s || typeof s !== "object") return d;
+    ["hero", "settings", "wins"].forEach(function (k) { s[k] = Object.assign({}, d[k], s[k] || {}); });
+    ["xp", "rounds"].forEach(function (k) { if (typeof s[k] !== "number") s[k] = 0; });
+    ["badges", "unlocks", "log"].forEach(function (k) { if (!Array.isArray(s[k])) s[k] = []; });
+    if (!s.stats || typeof s.stats !== "object") s.stats = {};
+    s.v = 1;
+    return s;
+  }
+
+  return {
+    D: D, setSeed: setSeed, rand: rand, ri: ri, pick: pick, shuffle: shuffle,
+    SKILLS: SKILLS, TIERS: TIERS, harder: harder, ARENAS: ARENAS, MATH: MATH, WORD_T: WORD_T, finalPossession: finalPossession,
+    gcd: gcd, simp: simp, parseFrac: parseFrac, parseIntAnswer: parseIntAnswer, fmt: fmt,
+    genScramble: genScramble, genMissing: genMissing, genDictation: genDictation, genHomophone: genHomophone, genWordSearch: genWordSearch, genWordle: genWordle,
+    canForm: canForm, sortedLetters: sortedLetters, patternMatches: patternMatches, makeWordSearch: makeWordSearch, readLine: readLine,
+    wordleScore: wordleScore, isValidGuess: isValidGuess, WORDLE_VALID: WORDLE_VALID,
+    generate: generate, checkAnswer: checkAnswer, planRound: planRound,
+    newSkillStat: newSkillStat, recordAttempt: recordAttempt, recordQuestion: recordQuestion, consumeOffer: consumeOffer,
+    UNLOCKS: UNLOCKS, BADGES: BADGES, level: level, unlockedFor: unlockedFor,
+    SAVE_KEY: SAVE_KEY, defaultSave: defaultSave, migrate: migrate
+  };
+})(typeof HLA_DATA !== "undefined" ? HLA_DATA : require("./data.js"));
+if (typeof module !== "undefined") module.exports = HLA;
+</script>
+<script>/* ===== Hero League Academy: UI ===== */
+{
+"use strict";
+const H = HLA, D = HLA.D;
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const screen = $("#screen");
+
+/* ---------- save ---------- */
+let storageOK = true, hasSave = false;
+function loadSave() {
+  try { const raw = localStorage.getItem(H.SAVE_KEY); if (raw) { hasSave = true; return H.migrate(JSON.parse(raw)); } }
+  catch (e) { storageOK = false; }
+  return H.migrate(null);
+}
+let S = loadSave();
+function persist() {
+  if (!S.hero.name) return;
+  try { localStorage.setItem(H.SAVE_KEY, JSON.stringify(S)); hasSave = true; } catch (e) { storageOK = false; }
+}
+function wipeSave() { try { localStorage.removeItem(H.SAVE_KEY); } catch (e) {} hasSave = false; S = H.migrate(null); }
+
+/* ---------- settings effects ---------- */
+function applySettings() {
+  let rm = S.settings.reducedMotion;
+  if (rm === null) { try { rm = matchMedia("(prefers-reduced-motion: reduce)").matches; } catch (e) { rm = false; } }
+  document.body.classList.toggle("rm", !!rm);
+}
+const speechOK = typeof window.speechSynthesis !== "undefined" && typeof window.SpeechSynthesisUtterance !== "undefined";
+function speak(text) {
+  if (!speechOK) return;
+  try { speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(text); u.rate = .85; u.lang = "en-US"; speechSynthesis.speak(u); } catch (e) {}
+}
+
+/* ---------- sound ---------- */
+let AC = null;
+function tone(notes, type) {
+  if (S.settings.mute) return;
+  try {
+    AC = AC || new (window.AudioContext || window.webkitAudioContext)();
+    let t = AC.currentTime;
+    notes.forEach(([f, d]) => {
+      const o = AC.createOscillator(), g = AC.createGain();
+      o.type = type || "triangle"; o.frequency.value = f;
+      g.gain.setValueAtTime(.0001, t); g.gain.exponentialRampToValueAtTime(.18, t + .02); g.gain.exponentialRampToValueAtTime(.0001, t + d);
+      o.connect(g); g.connect(AC.destination); o.start(t); o.stop(t + d + .02); t += d * .85;
+    });
+  } catch (e) {}
+}
+function noise(dur) {
+  if (S.settings.mute) return;
+  try {
+    AC = AC || new (window.AudioContext || window.webkitAudioContext)();
+    const len = AC.sampleRate * dur, buf = AC.createBuffer(1, len, AC.sampleRate), d = buf.getChannelData(0);
+    for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * (1 - i / len) * .5;
+    const s = AC.createBufferSource(), f = AC.createBiquadFilter(), g = AC.createGain();
+    f.type = "bandpass"; f.frequency.value = 900; g.gain.value = .25;
+    s.buffer = buf; s.connect(f); f.connect(g); g.connect(AC.destination); s.start();
+  } catch (e) {}
+}
+// soft, bubbly "bloop": a gentle sine that slides up in pitch, with a little random variety
+function bloop() {
+  if (S.settings.mute) return;
+  try {
+    AC = AC || new (window.AudioContext || window.webkitAudioContext)();
+    const t = AC.currentTime, base = 260 + Math.random() * 80;
+    const o = AC.createOscillator(), g = AC.createGain(), f = AC.createBiquadFilter();
+    o.type = "sine";
+    o.frequency.setValueAtTime(base, t);
+    o.frequency.exponentialRampToValueAtTime(base * 2.1, t + .09);
+    f.type = "lowpass"; f.frequency.value = 1400;
+    g.gain.setValueAtTime(.0001, t);
+    g.gain.exponentialRampToValueAtTime(.14, t + .015);
+    g.gain.exponentialRampToValueAtTime(.0001, t + .16);
+    o.connect(f); f.connect(g); g.connect(AC.destination); o.start(t); o.stop(t + .18);
+  } catch (e) {}
+}
+const sfx = {
+  good: () => tone([[523, .09], [659, .09], [784, .16]]),
+  bad: () => tone([[260, .14], [210, .2]], "sine"),
+  tap: () => bloop(),
+  win: () => { tone([[523, .1], [659, .1], [784, .1], [1047, .3]]); noise(1.2); },
+  crowd: () => noise(.8),
+  whistle: () => tone([[1900, .12], [2100, .25]], "sine"),
+  swish: () => tone([[400, .05], [700, .05], [1200, .12]], "sine")
+};
+
+/* ---------- hero art ---------- */
+const SKIN = ["#f9d7b5", "#e8b98a", "#c68a5a", "#8d5a3b", "#5c3a26"];
+const COLORS = ["#e63946", "#1d6fe0", "#1fa35c", "#ff8a1f", "#7b3fe4", "#16141a", "#ffd23f", "#2ec4f1", "#ff5fa2", "#c0c0c0"];
+const EMBLEMS = {
+  bolt: "M11 1 L4 11 H9 L7 19 L16 7 H11 Z",
+  star: "M10 1 L12.6 7.2 L19.5 7.6 L14 12 L16 19 L10 15 L4 19 L6 12 L0.5 7.6 L7.4 7.2Z",
+  shield: "M10 1 L18 4 V10 C18 15 14 18 10 19 C6 18 2 15 2 10 V4Z",
+  wing: "M1 13 C5 4 12 2 19 4 C15 6 13 8 12 12 C9 10 6 10 1 13Z",
+  orbit: "M10 3 A7 7 0 1 1 9.99 3 Z M10 7 A3 3 0 1 0 10.01 7 Z",
+  flame: "M10 1 C14 6 17 9 15 14 C14 17 12 19 10 19 C7 19 4 17 4 13 C4 10 6 9 7 6 C8 9 9 10 10 10 C11 7 10 4 10 1Z",
+  crown: "M2 15 L3 5 L7 10 L10 3 L13 10 L17 5 L18 15Z"
+};
+const EMBLEM_NAMES = { bolt: "Bolt", star: "Star", shield: "Shield", wing: "Wing", orbit: "Orbit", flame: "Flame", crown: "Crown" };
+const MASKS = { domino: "Domino", cowl: "Cowl", bandana: "Bandana", visor: "Cyber Visor", helm: "Titan Helm" };
+const CAPES = { none: "No cape", classic: "Classic Cape", storm: "Storm Cape", royal: "Royal Cape" };
+const LOCK = { flame: "emblem-flame", crown: "emblem-crown", visor: "mask-visor", helm: "mask-helm", storm: "cape-storm", royal: "cape-royal" };
+const has = id => S.unlocks.indexOf(id) >= 0;
+const avail = key => !LOCK[key] || has(LOCK[key]);
+function shade(hex, f) {
+  const n = parseInt(hex.slice(1), 16); let r = n >> 16, g = (n >> 8) & 255, b = n & 255;
+  r = Math.round(r * f); g = Math.round(g * f); b = Math.round(b * f);
+  return "#" + [r, g, b].map(v => Math.max(0, Math.min(255, v)).toString(16).padStart(2, "0")).join("");
+}
+function heroInner(h, pose) {
+  const p = h.primary, s = h.secondary, k = SKIN[h.skin || 0] || SKIN[0], ink = "#16141a", pd = shade(p, .75);
+  let out = "";
+  // cape
+  if (h.cape && h.cape !== "none") {
+    const cc = h.cape === "storm" ? "#1b2a6b" : h.cape === "royal" ? "#7b3fe4" : s;
+    const edge = h.cape === "storm" ? "L100 150 L88 140 L78 152 L66 140 L54 152 L42 140 L32 152 L20 150" : "Q60 160 20 150";
+    out += `<path d="M42 54 L78 54 L100 150 ${edge} Z" fill="${cc}" stroke="${ink}" stroke-width="4" stroke-linejoin="round"/>`;
+    if (h.cape === "royal") out += `<path d="M28 146 Q60 156 94 146" fill="none" stroke="#ffd23f" stroke-width="4"/>`;
+  }
+  // legs + boots
+  out += `<rect x="44" y="106" width="14" height="40" rx="5" fill="${pd}" stroke="${ink}" stroke-width="4"/><rect x="62" y="106" width="14" height="40" rx="5" fill="${pd}" stroke="${ink}" stroke-width="4"/>`;
+  if (h.boots === "rocket") out += `<path d="M44 156 L51 168 L58 156Z M62 156 L69 168 L76 156Z" fill="#ff8a1f" stroke="${ink}" stroke-width="3"/>`;
+  out += `<rect x="41" y="134" width="19" height="22" rx="5" fill="${h.boots === "rocket" ? "#c0c0c0" : s}" stroke="${ink}" stroke-width="4"/><rect x="60" y="134" width="19" height="22" rx="5" fill="${h.boots === "rocket" ? "#c0c0c0" : s}" stroke="${ink}" stroke-width="4"/>`;
+  // torso, belt, emblem
+  out += `<path d="M38 56 Q60 46 82 56 L80 110 Q60 116 40 110 Z" fill="${p}" stroke="${ink}" stroke-width="4" stroke-linejoin="round"/>`;
+  out += `<rect x="39" y="98" width="42" height="9" fill="${s}" stroke="${ink}" stroke-width="3"/><rect x="55" y="96" width="10" height="13" rx="2" fill="#ffd23f" stroke="${ink}" stroke-width="3"/>`;
+  out += `<circle cx="60" cy="74" r="13" fill="${s}" stroke="${ink}" stroke-width="3.5"/><g transform="translate(50.5 64.5) scale(.95)"><path d="${EMBLEMS[h.emblem] || EMBLEMS.bolt}" fill="${ink}" fill-rule="evenodd"/></g>`;
+  // arms
+  const up = pose === "flex" ? [145, -145] : pose === "cheer" ? [25, -150] : [18, -18];
+  const glove = h.gloves === "power" ? 13 : 9;
+  [[37, up[0], -1], [83, up[1], 1]].forEach(([x, rot, side]) => {
+    out += `<g transform="rotate(${rot} ${x} 58)"><rect x="${x - 7}" y="56" width="14" height="40" rx="7" fill="${p}" stroke="${ink}" stroke-width="4"/><circle cx="${x}" cy="98" r="${glove}" fill="${h.gloves === "power" ? "#ffd23f" : s}" stroke="${ink}" stroke-width="4"/>${h.gloves === "power" ? `<path d="M${x - 8} 98 H${x + 8}" stroke="${ink}" stroke-width="3"/>` : ""}</g>`;
+  });
+  // head
+  out += `<rect x="54" y="44" width="12" height="10" fill="${k}" stroke="${ink}" stroke-width="3"/>`;
+  if (h.mask === "cowl") {
+    out += `<path d="M42 30 L44 8 L52 18 L68 18 L76 8 L78 30 Q78 52 60 54 Q42 52 42 30Z" fill="${p}" stroke="${ink}" stroke-width="4" stroke-linejoin="round"/><path d="M47 34 Q60 30 73 34 Q73 50 60 51 Q47 50 47 34Z" fill="${k}" stroke="${ink}" stroke-width="3"/>`;
+    out += `<path d="M47 28 L56 31 L47 33Z M73 28 L64 31 L73 33Z" fill="#fff" stroke="${ink}" stroke-width="2"/><path d="M53 42 Q60 47 67 42" fill="none" stroke="${ink}" stroke-width="3" stroke-linecap="round"/>`;
+  } else if (h.mask === "helm") {
+    out += `<path d="M40 34 Q40 12 60 12 Q80 12 80 34 L80 46 Q60 56 40 46Z" fill="${s}" stroke="${ink}" stroke-width="4"/><path d="M60 2 L66 14 L54 14Z" fill="#e63946" stroke="${ink}" stroke-width="3"/><path d="M46 28 H74 V34 H64 V46 H56 V34 H46Z" fill="${ink}"/>`;
+  } else {
+    out += `<circle cx="60" cy="31" r="19" fill="${k}" stroke="${ink}" stroke-width="4"/><path d="M41 26 Q44 9 62 11 Q78 12 79 27 Q70 18 60 20 Q50 18 41 26Z" fill="${ink}"/>`;
+    if (h.mask === "none") out += `<ellipse cx="52" cy="32" rx="3" ry="3.5" fill="${ink}"/><ellipse cx="68" cy="32" rx="3" ry="3.5" fill="${ink}"/>`;
+    else if (h.mask === "visor") out += `<rect x="42" y="25" width="36" height="11" rx="5" fill="#2ec4f1" stroke="${ink}" stroke-width="3"/><path d="M47 28 H58" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>`;
+    else if (h.mask === "bandana") out += `<path d="M41 23 Q60 17 79 23 L79 30 Q60 24 41 30Z" fill="${s}" stroke="${ink}" stroke-width="3"/><path d="M79 26 L92 20 L90 32Z" fill="${s}" stroke="${ink}" stroke-width="3"/><ellipse cx="52" cy="35" rx="3" ry="3.5" fill="${ink}"/><ellipse cx="68" cy="35" rx="3" ry="3.5" fill="${ink}"/>`;
+    else out += `<path d="M40 30 Q50 23 60 30 Q70 23 80 30 Q78 39 68 38 Q62 37 60 34 Q58 37 52 38 Q42 39 40 30Z" fill="${p === "#16141a" ? s : ink}" stroke="${ink}" stroke-width="2.5"/><ellipse cx="51" cy="32" rx="4" ry="2.6" fill="#fff"/><ellipse cx="69" cy="32" rx="4" ry="2.6" fill="#fff"/>`;
+    out += `<path d="M52 42 Q60 48 68 42" fill="none" stroke="${ink}" stroke-width="3" stroke-linecap="round"/>`;
+  }
+  return out;
+}
+function heroSVG(h, pose, label) {
+  return `<svg viewBox="0 0 120 172" role="img" aria-label="${esc(label || (h.name || "Hero"))}" xmlns="http://www.w3.org/2000/svg">${heroInner(h, pose)}</svg>`;
+}
+function sprite(id, h, x, y, w, pose) {
+  return `<g id="${id}" class="spr" style="transform:translate(${x}px,${y}px)"><g class="anim"><svg x="0" y="0" width="${w}" height="${Math.round(w * 172 / 120)}" viewBox="0 0 120 172">${heroInner(h, pose)}</svg></g></g>`;
+}
+const RIVALS = {
+  main: { name: "Boulder Brannigan", primary: "#8a4b2a", secondary: "#ff8a1f", mask: "helm", emblem: "shield", skin: 2, cape: "none", gloves: "power", boots: "basic" },
+  soccer: { name: "Keeper Kova", primary: "#1fa35c", secondary: "#16141a", mask: "bandana", emblem: "orbit", skin: 3, cape: "none", gloves: "power", boots: "basic" },
+  court: { name: "Vex of the Iron Owls", primary: "#5b3fa8", secondary: "#c0c0c0", mask: "cowl", emblem: "wing", skin: 1, cape: "none", gloves: "basic", boots: "basic" }
+};
+const CITIZEN = { primary: "#ff8a1f", secondary: "#2ec4f1", mask: "none", emblem: "star", skin: 4, cape: "none", gloves: "basic", boots: "basic" };
+
+/* ---------- scenes (800x320 viewBox, slice) ---------- */
+function sceneRooftop(u) {
+  let win = "";
+  for (let x = 0; x < 800; x += 70) { const h = 120 + ((x * 37) % 90); win += `<rect x="${x}" y="${320 - h}" width="60" height="${h}" fill="#2b2f6b" stroke="#16141a" stroke-width="3"/>`; for (let y = 320 - h + 12; y < 300; y += 22) win += `<rect x="${x + 10}" y="${y}" width="10" height="10" fill="${(x + y) % 3 ? "#ffd23f" : "#3d4290"}"/><rect x="${x + 36}" y="${y}" width="10" height="10" fill="${(x * y) % 4 ? "#3d4290" : "#ffd23f"}"/>`; }
+  return `<defs><linearGradient id="rs${u}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#141a46"/><stop offset="1" stop-color="#6b3fb8"/></linearGradient></defs>
+  <rect width="800" height="320" fill="url(#rs${u})"/><circle cx="250" cy="70" r="30" fill="#fff3b0" stroke="#16141a" stroke-width="4"/>
+  ${[[120, 50], [330, 40], [420, 80], [560, 50], [700, 90], [480, 30]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="2.5" fill="#fff"/>`).join("")}
+  <g opacity=".55">${win}</g>
+  <rect x="150" y="250" width="200" height="70" fill="#3a3f7a" stroke="#16141a" stroke-width="4"/><rect x="330" y="200" width="110" height="120" fill="#454a8c" stroke="#16141a" stroke-width="4"/>
+  <rect x="480" y="105" width="120" height="215" fill="#565ca8" stroke="#16141a" stroke-width="4"/><rect x="470" y="95" width="140" height="14" fill="#ffd23f" stroke="#16141a" stroke-width="4"/>
+  <path d="M540 95 V55 M528 70 H552" stroke="#16141a" stroke-width="5"/><circle cx="540" cy="52" r="6" fill="#e63946" stroke="#16141a" stroke-width="3"/>
+  ${[130, 165, 200, 235, 270].map(y => `<rect x="498" y="${y}" width="18" height="16" fill="#ffd23f"/><rect x="564" y="${y}" width="18" height="16" fill="#ffd23f"/>`).join("")}
+  <g id="rope" opacity="0"><path d="M300 250 Q420 120 520 100" fill="none" stroke="#fff" stroke-width="4" stroke-dasharray="10 6"/></g>`;
+}
+function sceneRing(u) {
+  let crowd = "";
+  const cols = ["#e63946", "#ffd23f", "#2ec4f1", "#1fa35c", "#ff5fa2", "#ff8a1f", "#fff"];
+  for (let r = 0; r < 3; r++) { let row = ""; for (let x = 10 + r * 14; x < 800; x += 28) row += `<circle cx="${x}" cy="${70 + r * 30}" r="11" fill="${cols[(x + r * 3) % 7]}" stroke="#16141a" stroke-width="2"/>`; crowd += `<g class="crowdrow" style="animation-delay:${r * .15}s;animation-play-state:var(--cp,paused)">${row}</g>`; }
+  return `<rect width="800" height="320" fill="#120f24"/>${crowd}
+  <g opacity=".22"><polygon class="spot" points="220,0 160,300 300,300" fill="#ffd23f"/><polygon class="spot" style="animation-delay:-1.5s" points="580,0 500,300 640,300" fill="#2ec4f1"/></g>
+  <path d="M110 230 L690 230 L740 300 L60 300Z" fill="#e9e4d6" stroke="#16141a" stroke-width="4"/>
+  <rect x="40" y="296" width="720" height="40" fill="#1d6fe0" stroke="#16141a" stroke-width="4"/>
+  <text x="400" y="318" text-anchor="middle" font-family="Bangers,Impact,sans-serif" font-size="24" fill="#ffd23f" letter-spacing="3">HERO LEAGUE MAIN EVENT</text>
+  <rect x="96" y="140" width="16" height="160" fill="#c0c0c0" stroke="#16141a" stroke-width="4"/><rect x="688" y="140" width="16" height="160" fill="#c0c0c0" stroke="#16141a" stroke-width="4"/>
+  <path d="M104 160 H696" stroke="#e63946" stroke-width="6"/><path d="M104 190 H696" stroke="#fff" stroke-width="6"/><path d="M104 220 H696" stroke="#1d6fe0" stroke-width="6"/>`;
+}
+function sceneSoccer(u) {
+  let stripes = "";
+  for (let i = 0; i < 8; i++) stripes += `<rect x="0" y="${150 + i * 22}" width="800" height="22" fill="${i % 2 ? "#2fa84f" : "#38b85a"}"/>`;
+  let net = "";
+  for (let x = 262; x < 540; x += 18) net += `<path d="M${x} 82 V230" stroke="#fff" stroke-opacity=".55" stroke-width="2"/>`;
+  for (let y = 94; y < 230; y += 16) net += `<path d="M252 ${y} H548" stroke="#fff" stroke-opacity=".55" stroke-width="2"/>`;
+  let fans = ""; for (let x = 8; x < 800; x += 22) fans += `<circle cx="${x}" cy="${52 + (x % 3) * 8}" r="8" fill="${["#e63946", "#ffd23f", "#2ec4f1", "#fff"][x % 4]}" stroke="#16141a" stroke-width="2"/>`;
+  return `<rect width="800" height="320" fill="#7fd3ff"/><rect y="30" width="800" height="70" fill="#3a3f7a"/><g class="crowdrow" style="animation-play-state:var(--cp,paused)">${fans}</g>${stripes}
+  <rect x="250" y="80" width="300" height="152" fill="#fff" fill-opacity=".15"/>${net}
+  <path d="M250 232 V80 H550 V232" fill="none" stroke="#fff" stroke-width="10" stroke-linejoin="round"/><path d="M250 232 V80 H550 V232" fill="none" stroke="#16141a" stroke-width="3"/>
+  <path d="M150 232 H650 M330 232 V200 H470 V232" stroke="#fff" stroke-width="4" fill="none"/><circle cx="400" cy="292" r="4" fill="#fff"/>`;
+}
+function sceneCourt(u) {
+  return `<defs><linearGradient id="cf${u}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e9a95a"/><stop offset="1" stop-color="#c47a33"/></linearGradient></defs>
+  <rect width="800" height="320" fill="#241f45"/><rect y="0" width="800" height="120" fill="#2d2763"/>
+  ${Array.from({ length: 36 }, (_, i) => `<circle cx="${i * 23 + 6}" cy="${40 + (i % 3) * 18}" r="8" fill="${["#ffd23f", "#e63946", "#7b3fe4", "#fff"][i % 4]}" stroke="#16141a" stroke-width="2"/>`).join("")}
+  <rect y="150" width="800" height="170" fill="url(#cf${u})"/>${Array.from({ length: 16 }, (_, i) => `<path d="M${i * 52} 150 L${i * 52 - 30} 320" stroke="#b36a26" stroke-width="2"/>`).join("")}
+  <path d="M470 320 L520 170 H640 L700 320" fill="#e63946" fill-opacity=".85" stroke="#fff" stroke-width="4"/><path d="M90 320 Q170 160 580 170" fill="none" stroke="#fff" stroke-width="4"/>
+  <rect x="596" y="60" width="16" height="140" fill="#888" stroke="#16141a" stroke-width="3"/>
+  <rect x="520" y="44" width="110" height="70" fill="#fff" stroke="#16141a" stroke-width="5"/><rect x="552" y="68" width="46" height="34" fill="none" stroke="#e63946" stroke-width="4"/>
+  <ellipse cx="575" cy="112" rx="30" ry="7" fill="none" stroke="#ff8a1f" stroke-width="6"/><path d="M548 114 L558 146 H592 L602 114 M560 114 L568 146 M590 114 L582 146 M575 114 V146" stroke="#fff" stroke-width="2.5" fill="none"/>`;
+}
+const SCENES = { rooftop: sceneRooftop, main: sceneRing, soccer: sceneSoccer, court: sceneCourt };
+let uid = 0;
+function cardArt(a) { const u = "c" + (uid++); return `<svg viewBox="0 0 800 320" preserveAspectRatio="xMidYMid slice" aria-hidden="true">${SCENES[a](u)}${a === "main" ? sprite("x", S.hero, 230, 132, 92, "flex") + sprite("y", RIVALS.main, 480, 128, 96) : a === "soccer" ? sprite("x", RIVALS.soccer, 360, 128, 72) + `<circle cx="400" cy="285" r="14" fill="#fff" stroke="#16141a" stroke-width="4"/>` : a === "court" ? sprite("x", S.hero, 330, 150, 86, "cheer") : sprite("x", S.hero, 200, 160, 70, "cheer") + sprite("y", CITIZEN, 515, 26, 50, "cheer")}</svg>`; }
+
+/* ---------- fx ---------- */
+const fx = $("#fx");
+function pow(text) { const d = document.createElement("div"); d.className = "pow"; d.textContent = text; fx.appendChild(d); setTimeout(() => d.remove(), 950); }
+function particles(kind) {
+  if (document.body.classList.contains("rm")) return;
+  const cols = ["#e63946", "#ffd23f", "#2ec4f1", "#1fa35c", "#ff5fa2", "#ff8a1f"];
+  const W = innerWidth, Hh = innerHeight;
+  const spawn = (x, y, n, cls, spread) => {
+    for (let i = 0; i < n; i++) {
+      const p = document.createElement("i"); p.className = "pt " + (cls || "");
+      const a = Math.random() * Math.PI * 2, dist = (spread || 220) * (.4 + Math.random() * .6);
+      p.style.left = x + "px"; p.style.top = y + "px"; p.style.background = cols[i % cols.length];
+      p.style.setProperty("--dx", Math.cos(a) * dist + "px"); p.style.setProperty("--dy", (Math.sin(a) * dist + (cls === "conf" ? 260 : 0)) + "px");
+      fx.appendChild(p); setTimeout(() => p.remove(), 1200);
+    }
+  };
+  if (kind === "confetti") { for (let k = 0; k < 5; k++) spawn(W * (.1 + k * .2), Hh * .2, 12, "conf", 180); }
+  else if (kind === "fireworks") { [[.25, .3], [.75, .28], [.5, .18]].forEach(([x, y], k) => setTimeout(() => spawn(W * x, Hh * y, 22, "star", 160), k * 250)); }
+  else if (kind === "lightning") { for (let k = 0; k < 4; k++) { const b = document.createElement("i"); b.className = "bolt-fx"; b.style.left = (W * (.15 + k * .22)) + "px"; b.style.top = (Hh * .15) + "px"; fx.appendChild(b); setTimeout(() => b.remove(), 800); } spawn(W / 2, Hh * .4, 10, "star", 200); }
+  else spawn(W / 2, Hh * .4, 18, "star", 260);
+}
+function celebrate(big) {
+  const words = ["POW!", "BOOM!", "WHAM!", "ZING!", "KAPOW!", "YES!", "SLAM!"];
+  pow(big ? "CHAMPION!" : H.pick(words));
+  const c = S.settings.celebration || "starburst";
+  particles(c === "spin" ? "starburst" : c);
+  const hs = $("#hero-g .anim");
+  if (hs && !document.body.classList.contains("rm")) { const cls = c === "spin" ? "do-spin" : c === "lightning" ? "do-flex" : "do-bounce"; hs.classList.remove("do-spin", "do-flex", "do-bounce"); void hs.getBBox; requestAnimationFrame(() => hs.classList.add(cls)); setTimeout(() => hs.classList.remove(cls), 1100); }
+}
+function react(id, cls) { const el = $("#" + id + " .anim"); if (!el || document.body.classList.contains("rm")) return; el.classList.remove(cls); requestAnimationFrame(() => el.classList.add(cls)); setTimeout(() => el.classList.remove(cls), 900); }
+function moveSprite(id, x, y) { const el = $("#" + id); if (el) el.style.transform = `translate(${x}px,${y}px)`; }
+function toast(msg) { const d = document.createElement("div"); d.textContent = msg; $("#toast").appendChild(d); setTimeout(() => d.remove(), 2400); }
+
+/* ---------- modal ---------- */
+function modal(html, onMount) {
+  const m = $("#modal"); m.innerHTML = `<div class="panel" role="dialog" aria-modal="true">${html}</div>`; m.hidden = false;
+  const prev = document.activeElement;
+  const close = () => { m.hidden = true; m.innerHTML = ""; if (prev && prev.focus) try { prev.focus(); } catch (e) {} };
+  m.onkeydown = e => { if (e.key === "Escape") close(); };
+  if (onMount) onMount(m, close);
+  const f = m.querySelector("[data-autofocus]") || m.querySelector("button"); if (f) f.focus();
+  return close;
+}
+function confirmBox(title, text, yes, no, onYes) {
+  modal(`<h2>${title}</h2><p>${text}</p><div class="row"><button class="btn red" id="m-yes">${yes}</button><button class="btn" id="m-no" data-autofocus>${no}</button></div>`, (m, close) => {
+    $("#m-yes", m).onclick = () => { close(); onYes(); };
+    $("#m-no", m).onclick = close;
+  });
+}
+
+/* ---------- top bar ---------- */
+function topbar() {
+  const lvl = H.level(S.xp);
+  $("#topbar").innerHTML = `<button class="logo comic" id="tb-home" aria-label="Hero League Academy home">HERO LEAGUE <span>ACADEMY</span></button><span class="grow"></span>
+  ${S.hero.name ? `<span class="chip">Lv <b>${lvl}</b></span><span class="chip"><b>${S.xp}</b> XP</span>
+  <button class="btn sm" id="tb-prog">Progress</button><button class="btn sm" id="tb-lock">Locker</button>` : ""}
+  <button class="btn sm" id="tb-mute" aria-pressed="${S.settings.mute}">${S.settings.mute ? "Sound: off" : "Sound: on"}</button>
+  <button class="btn sm" id="tb-set">Settings</button>`;
+  $("#tb-home").onclick = () => { if (R && !R.over) quitRound(); else go(S.hero.name ? "hub" : "title"); };
+  if ($("#tb-prog")) $("#tb-prog").onclick = () => leaveTo("progress");
+  if ($("#tb-lock")) $("#tb-lock").onclick = () => leaveTo("locker");
+  $("#tb-set").onclick = () => leaveTo("settings");
+  $("#tb-mute").onclick = () => { S.settings.mute = !S.settings.mute; persist(); topbar(); };
+}
+function leaveTo(scr) { if (R && !R.over) quitRound(scr); else go(scr); }
+
+/* ---------- router ---------- */
+let R = null, keyHandler = null, timerId = null;
+function go(name, arg) {
+  stopTimer(); keyHandler = null;
+  if (name !== "round") R = null;
+  try { speechSynthesis && speechSynthesis.cancel(); } catch (e) {}
+  topbar();
+  ({ title: renderTitle, creator: renderCreator, hub: renderHub, round: renderRound, progress: renderProgress, locker: renderLocker, settings: renderSettings, vault: renderVault, hunt: renderHunt })[name](arg);
+  window.scrollTo(0, 0);
+  const h = screen.querySelector("h1,h2"); if (h && !screen.contains(document.activeElement)) { h.setAttribute("tabindex", "-1"); h.focus({ preventScroll: true }); }
+}
+document.addEventListener("keydown", e => { if (keyHandler && $("#modal").hidden) keyHandler(e); });
+
+/* ---------- title ---------- */
+function renderTitle() {
+  const demo = Object.assign({}, S.hero.name ? S.hero : { primary: "#e63946", secondary: "#ffd23f", mask: "domino", emblem: "bolt", cape: "classic", skin: 1 });
+  screen.innerHTML = `<section class="panel"><div class="title-hero">
+   <div><h1><span class="burst">HERO LEAGUE</span><br><span class="burst2">ACADEMY</span></h1>
+   <p style="font-size:19px;margin:22px 0 16px">Build your hero. Pick an arena. Power up with <b>spelling</b> and <b>math</b> to win rescues, title matches, shootouts and buzzer-beaters.</p>
+   <div class="row">${hasSave ? `<button class="btn big red" id="t-go">Continue as ${esc(S.hero.name)}</button>` : `<button class="btn big red" id="t-new1">Create your hero</button>`}
+   ${hasSave ? `<button class="btn" id="t-new">New Game</button>` : ""}</div>
+   ${!storageOK ? `<p class="muted">Heads up: this browser is blocking saved games, so progress will reset when the page closes.</p>` : ""}</div>
+   <div class="herobox">${heroSVG(demo, "flex", "Hero preview")}</div></div></section>`;
+  if ($("#t-go")) $("#t-go").onclick = () => go("hub");
+  if ($("#t-new1")) $("#t-new1").onclick = () => go("creator", { fresh: true });
+  if ($("#t-new")) $("#t-new").onclick = newGameFlow;
+}
+function newGameFlow() {
+  confirmBox("Start a New Game?", `This erases <b>${esc(S.hero.name || "your hero")}</b>, all XP, badges, unlocked items, and progress on this device. This can't be undone.`, "Yes, erase and start over", "Keep my progress", () => { wipeSave(); applySettings(); toast("Fresh start! Create a new hero."); go("creator", { fresh: true }); });
+}
+
+/* ---------- creator ---------- */
+const NAME_A = ["Captain", "Thunder", "Turbo", "Mega", "Rocket", "Shadow", "Blaze", "Comet", "Iron", "Atomic", "Night", "Storm"];
+const NAME_B = ["Kid", "Comet", "Strike", "Flash", "Falcon", "Volt", "Dynamo", "Ranger", "Blitz", "Titan", "Phoenix", "Racer"];
+function renderCreator(opts) {
+  const draft = Object.assign({}, S.hero);
+  if (!draft.name && opts && opts.fresh) { draft.cape = "classic"; draft.skin = draft.skin || 0; }
+  const draw = () => { $("#cr-prev").innerHTML = heroSVG(draft, "flex", "Your hero preview"); $("#cr-namebig").textContent = draft.name || "Your Hero"; };
+  const pressed = (v, cur) => `aria-pressed="${v === cur}"`;
+  screen.innerHTML = `<section class="panel"><span class="caption">Hero Lab</span><h2 style="margin-top:8px">Design your hero</h2>
+  <div class="grid2" style="margin-top:12px"><div><div class="herobox" id="cr-prev"></div><p class="comic" id="cr-namebig" style="font-size:34px;text-align:center;margin:10px 0 0"></p></div>
+  <div><label class="opt-label" for="cr-name">Hero name</label><div class="row"><input class="txt" id="cr-name" maxlength="18" autocomplete="off" value="${esc(draft.name)}" placeholder="Type a hero name" style="flex:1"><button class="btn sm" id="cr-rand">Random name</button></div>
+  <span class="opt-label">Suit color</span><div class="swatches" id="cr-p">${COLORS.map(c => `<button class="sw" style="background:${c}" data-v="${c}" ${pressed(c, draft.primary)} aria-label="Suit color ${c}"></button>`).join("")}</div>
+  <span class="opt-label">Trim color</span><div class="swatches" id="cr-s">${COLORS.map(c => `<button class="sw" style="background:${c}" data-v="${c}" ${pressed(c, draft.secondary)} aria-label="Trim color ${c}"></button>`).join("")}</div>
+  <span class="opt-label">Mask</span><div class="row" id="cr-m">${Object.keys(MASKS).map(k => `<button class="choice" data-v="${k}" ${pressed(k, draft.mask)} ${avail(k) ? "" : "disabled"}>${MASKS[k]}${avail(k) ? "" : " (locked)"}</button>`).join("")}</div>
+  <span class="opt-label">Emblem</span><div class="row" id="cr-e">${Object.keys(EMBLEMS).map(k => `<button class="choice" data-v="${k}" ${pressed(k, draft.emblem)} ${avail(k) ? "" : "disabled"}><svg viewBox="0 0 20 20" aria-hidden="true"><path d="${EMBLEMS[k]}" fill-rule="evenodd"/></svg>${EMBLEM_NAMES[k]}${avail(k) ? "" : " (locked)"}</button>`).join("")}</div>
+  <span class="opt-label">Cape</span><div class="row" id="cr-c">${Object.keys(CAPES).map(k => `<button class="choice" data-v="${k}" ${pressed(k, draft.cape)} ${avail(k) ? "" : "disabled"}>${CAPES[k]}${avail(k) ? "" : " (locked)"}</button>`).join("")}</div>
+  <span class="opt-label">Skin tone</span><div class="swatches" id="cr-k">${SKIN.map((c, i) => `<button class="sw" style="background:${c}" data-v="${i}" ${pressed(i, draft.skin || 0)} aria-label="Skin tone ${i + 1}"></button>`).join("")}</div>
+  <div class="row" style="margin-top:18px"><button class="btn big red" id="cr-save">Save hero</button>${S.hero.name ? `<button class="btn" id="cr-cancel">Cancel</button>` : ""}</div><p class="muted" id="cr-msg" aria-live="polite"></p></div></div></section>`;
+  const bindGroup = (gid, key, conv) => $$("#" + gid + " button").forEach(b => b.onclick = () => { draft[key] = conv ? conv(b.dataset.v) : b.dataset.v; $$("#" + gid + " button").forEach(x => x.setAttribute("aria-pressed", x === b)); sfx.tap(); draw(); });
+  bindGroup("cr-p", "primary"); bindGroup("cr-s", "secondary"); bindGroup("cr-m", "mask"); bindGroup("cr-e", "emblem"); bindGroup("cr-c", "cape"); bindGroup("cr-k", "skin", Number);
+  $("#cr-name").oninput = e => { draft.name = e.target.value.replace(/[<>]/g, ""); draw(); };
+  $("#cr-rand").onclick = () => { draft.name = H.pick(NAME_A) + " " + H.pick(NAME_B); $("#cr-name").value = draft.name; draw(); };
+  $("#cr-save").onclick = () => {
+    draft.name = (draft.name || "").trim();
+    if (!draft.name) { $("#cr-msg").textContent = "Every hero needs a name! Type one or tap Random name."; $("#cr-name").focus(); return; }
+    S.hero = draft; persist(); sfx.good(); toast(draft.name + " is ready for action!"); go("hub");
+  };
+  if ($("#cr-cancel")) $("#cr-cancel").onclick = () => go("hub");
+  draw();
+}
+
+/* ---------- hub ---------- */
+let hubMode = "mixed";
+const ARENA_INFO = {
+  rooftop: "Unscramble words and solve problems to power rescue gadgets and climb to the citizen on the tower.",
+  main: "Strut down the ramp and take on Boulder Brannigan in a best-of-three title match. Fill the crowd meter!",
+  soccer: "Every right answer earns a penalty kick. Pick your corner and beat Keeper Kova.",
+  court: "Run plays with mental math and fractions, then win it on the final possession."
+};
+function renderHub() {
+  if (!S.hero.name) return go("creator", { fresh: true });
+  const tierSeg = (key, label) => `<div><span class="opt-label">${label}</span><div class="seg" role="group" aria-label="${label}">${["standard", "challenge"].map(t => `<button data-k="${key}" data-v="${t}" aria-pressed="${S.settings[key] === t}">${t === "standard" ? "Standard" : "Challenge"}</button>`).join("")}</div></div>`;
+  screen.innerHTML = `<section class="panel tilt"><div class="grid2" style="align-items:center">
+   <div class="row" style="flex-wrap:nowrap"><div style="width:110px;flex:none">${heroSVG(S.hero, "cheer")}</div><div><h2>${esc(S.hero.name)}</h2><p class="muted" style="margin:4px 0 8px">Level ${H.level(S.xp)} · ${S.xp} XP · ${S.badges.length} badge${S.badges.length === 1 ? "" : "s"}</p><button class="btn sm" id="h-edit">Edit hero</button></div></div>
+   <div><span class="opt-label">Choose your practice</span><div class="seg" role="group" aria-label="Subject">${[["spell", "Spelling"], ["math", "Math"], ["mixed", "Mixed"]].map(([v, l]) => `<button data-mode="${v}" aria-pressed="${hubMode === v}">${l}</button>`).join("")}</div>
+   <div class="row" style="margin-top:4px;align-items:flex-end">${tierSeg("spellTier", "Spelling level")}${tierSeg("mathTier", "Math level")}</div></div></div>
+   <div class="banner ${S.settings.banner}"></div></section>
+   <h2 style="margin:10px 0 14px" class="comic">Pick an arena</h2>
+   <div class="grid4">${Object.keys(H.ARENAS).map(a => `<article class="arena-card"><div class="art">${cardArt(a)}</div><div class="body"><h3>${H.ARENAS[a].name}</h3><p>${ARENA_INFO[a]}</p><button class="btn red" data-arena="${a}">Play ${H.ARENAS[a].name}</button></div></article>`).join("")}</div>
+   <section class="panel tilt2" style="margin-top:22px"><span class="caption">Training Gym</span><div class="row" style="margin-top:8px;justify-content:space-between">
+   <div style="flex:1 1 260px"><h3>Word Vault</h3><p class="muted" style="margin:2px 0 8px">Crack a secret 5-letter word in six guesses.</p><button class="btn blue" id="h-vault">Open the Vault</button></div>
+   <div style="flex:1 1 260px"><h3>Hero Hunt</h3><p class="muted" style="margin:2px 0 8px">A big word search packed with hero and sports words.</p><button class="btn blue" id="h-hunt">Start the Hunt</button></div></div></section>`;
+  $("#h-edit").onclick = () => go("creator");
+  $$("[data-mode]").forEach(b => b.onclick = () => { hubMode = b.dataset.mode; $$("[data-mode]").forEach(x => x.setAttribute("aria-pressed", x === b)); sfx.tap(); });
+  $$("[data-k]").forEach(b => b.onclick = () => { S.settings[b.dataset.k] = b.dataset.v; persist(); $$(`[data-k=${b.dataset.k}]`).forEach(x => x.setAttribute("aria-pressed", x === b)); sfx.tap(); });
+  $$("[data-arena]").forEach(b => b.onclick = () => startRound(b.dataset.arena, hubMode));
+  $("#h-vault").onclick = () => go("vault"); $("#h-hunt").onclick = () => go("hunt");
+}
+
+/* ---------- round engine ---------- */
+const BASE_LEN = { rooftop: 6, main: 6, soccer: 6, court: 7 };
+const GADGETS = ["Grapple Line", "Jet Boots", "Sonic Scanner", "Shield Bubble", "Glide Wings", "Rescue Net"];
+const CLIMB = [[190, 170], [250, 150], [320, 120], [370, 95], [420, 70], [470, 45], [500, 20]];
+function startRound(arena, mode) {
+  R = { arena, mode, slots: H.planRound(arena, mode), ptr: 0, count: 0, results: [], used: {}, queue: [], q: null, attempt: 0, xp: 0, over: false, review: [], hintOpen: false, st: {}, theme: H.ARENAS[arena].theme };
+  const st = R.st;
+  if (arena === "rooftop") st.stage = 0;
+  if (arena === "main") Object.assign(st, { fall: 1, me: 0, rv: 0, fMe: 0, fRv: 0, crowd: 10, decided: false, winner: null });
+  if (arena === "soccer") Object.assign(st, { goals: 0, shots: 0, saves: 0 });
+  if (arena === "court") Object.assign(st, { home: 84, away: 86, q: 4, clock: 150, finalDone: false, finalWon: false });
+  go("round");
+}
+function quitRound(dest) {
+  confirmBox("Leave this round?", "Your answers so far still count toward your progress, but you won't get the round's XP bonus.", "Leave round", "Keep playing", () => { R.over = true; go(dest || "hub"); });
+}
+function roundLen() { return BASE_LEN[R.arena]; }
+function isDone() {
+  const st = R.st;
+  if (R.arena === "main") return (st.decided && R.count >= 6) || R.count >= 8;
+  if (R.arena === "court") return st.finalDone;
+  return (R.count >= roundLen() && !R.queue.length) || R.count >= 8;
+}
+function tierFor(subject) { return subject === "spell" ? S.settings.spellTier : S.settings.mathTier; }
+function nextSlot() {
+  // court final possession
+  if (R.arena === "court" && ((R.count >= roundLen() - 1 && !R.queue.length) || R.count >= 7)) return { final: true, subject: R.mode === "spell" ? "spell" : "math", skill: R.mode === "spell" ? "dictation" : "word" };
+  const s = R.slots[R.ptr % R.slots.length]; R.ptr++;
+  const qi = R.queue.findIndex(x => x.subject === s.subject && x.due <= R.count);
+  const qi2 = qi >= 0 ? qi : (R.count >= roundLen() - 1 || R.ptr > 7 ? R.queue.findIndex(x => x.due <= R.count + 1) : -1);
+  if (qi2 >= 0) { const it = R.queue.splice(qi2, 1)[0]; return { subject: it.subject, skill: it.skill, tier: it.tier, similar: true }; }
+  return s;
+}
+function renderRound() {
+  const a = R.arena, u = "s" + (uid++);
+  let sprites = "";
+  if (a === "rooftop") sprites = sprite("cit-g", CITIZEN, 516, 18, 48, "cheer") + sprite("hero-g", S.hero, CLIMB[0][0], CLIMB[0][1], 72);
+  if (a === "main") sprites = sprite("hero-g", S.hero, 210, 128, 92, "flex") + sprite("rival-g", RIVALS.main, 500, 122, 100);
+  if (a === "soccer") sprites = sprite("rival-g", RIVALS.soccer, 362, 126, 76) + sprite("hero-g", S.hero, 230, 175, 70, "stand") + `<g id="ball" class="spr" style="transform:translate(400px,285px)"><g class="anim"><circle r="13" fill="#fff" stroke="#16141a" stroke-width="4"/><path d="M-5 -4 L0 -8 L5 -4 L3 3 L-3 3Z" fill="#16141a"/></g></g>`;
+  if (a === "court") sprites = sprite("rival-g", RIVALS.court, 450, 150, 80) + sprite("hero-g", S.hero, 260, 150, 86, "stand") + `<g id="ball" class="spr" style="transform:translate(330px,250px)"><g class="anim"><circle r="13" fill="#ff8a1f" stroke="#16141a" stroke-width="4"/><path d="M-13 0 H13 M0 -13 V13" stroke="#16141a" stroke-width="2"/></g></g>`;
+  screen.innerHTML = `<div class="roundbar"><h2 class="comic" style="margin-right:6px">${H.ARENAS[a].name}</h2><div class="pips" id="pips" aria-label="Challenge progress"></div><span class="grow" style="flex:1"></span>
+   <span class="chip" id="r-mode">${{ spell: "Spelling", math: "Math", mixed: "Mixed" }[R.mode]}</span>
+   <button class="btn sm" id="r-tier" aria-pressed="false"></button><button class="btn sm" id="r-quit">Quit round</button></div>
+   <div class="banner ${S.settings.banner}"></div>
+   <div class="stage" id="stage"><svg class="scene" viewBox="0 0 800 320" preserveAspectRatio="xMidYMid slice" aria-hidden="true">${SCENES[a](u)}${sprites}</svg><div class="hud" id="hud"></div></div>
+   <p class="offer" id="callout" aria-live="polite" style="font-weight:900"></p>
+   <section class="panel challenge" id="chal"></section>`;
+  $("#r-quit").onclick = () => quitRound();
+  $("#r-tier").onclick = () => { if (!R.q) return; const k = R.q.subject === "spell" ? "spellTier" : "mathTier"; S.settings[k] = S.settings[k] === "challenge" ? "standard" : "challenge"; persist(); updateTierBtn(); toast((R.q.subject === "spell" ? "Spelling" : "Math") + " set to " + (S.settings[k] === "challenge" ? "Challenge" : "Standard") + " starting with the next question."); };
+  drawHud(); pips();
+  if (a === "main") entrance(); else { callout(INTRO[a]); nextChallenge(); }
+}
+function updateTierBtn() { const b = $("#r-tier"); if (!b || !R.q) return; const subj = R.q.subject === "spell" ? "Spelling" : "Math"; const on = tierFor(R.q.subject) === "challenge"; b.textContent = subj + " Challenge: " + (on ? "ON" : "off"); b.setAttribute("aria-pressed", on); b.classList.toggle("on", on); }
+const INTRO = { rooftop: "A citizen is stuck on the tower! Power up all six gadgets to reach them.", soccer: "Shootout time! Each right answer earns you a penalty kick against Keeper Kova.", court: "Fourth quarter, down by 2. The clock only runs between plays — take your time." };
+function callout(t) { const c = $("#callout"); if (c) c.textContent = t; }
+function pips() {
+  const el = $("#pips"); if (!el) return;
+  const n = Math.max(R.arena === "main" ? 6 : roundLen(), R.count + (R.q && !R.q.doneFlag ? 0 : 0), R.results.length + (R.q ? 1 : 0));
+  let h = "";
+  for (let i = 0; i < n; i++) { const r = R.results[i]; h += `<span class="pip ${r ? (r === "first" ? "ok" : r === "second" ? "half" : "miss") : i === R.results.length && R.q ? "now" : ""}" title="Challenge ${i + 1}"></span>`; }
+  el.innerHTML = h; el.setAttribute("aria-label", `Challenge ${Math.min(R.results.length + 1, n)} of about ${n}`);
+}
+function drawHud() {
+  const st = R.st, hud = $("#hud"); if (!hud) return;
+  if (R.arena === "rooftop") hud.innerHTML = `<div class="meter">Gadgets powered: ${st.stage} / 6<div class="bar"><i style="width:${st.stage / 6 * 100}%"></i></div></div><div class="meter" style="min-width:0">${GADGETS.map((g, i) => `<span class="tag ${i < st.stage ? "m" : ""}" title="${g}">${i < st.stage ? g : "?"}</span>`).join(" ")}</div>`;
+  if (R.arena === "main") hud.innerHTML = `<div class="board"><div><div class="lb">${esc(S.hero.name).slice(0, 12)}</div><div class="sc">${st.fMe}</div></div><div><div class="lb">FALL ${Math.min(st.fall, 3)}</div><div class="sc" style="font-size:16px;line-height:30px">${st.me}–${st.rv}</div></div><div><div class="lb">BRANNIGAN</div><div class="sc">${st.fRv}</div></div></div><div class="meter">Crowd meter<div class="bar"><i style="width:${st.crowd}%"></i></div></div>`;
+  if (R.arena === "soccer") hud.innerHTML = `<div class="board"><div><div class="lb">GOALS</div><div class="sc">${st.goals}</div></div><div><div class="lb">SHOTS</div><div class="sc">${st.shots}</div></div><div><div class="lb">SAVES</div><div class="sc">${st.saves}</div></div></div><div class="meter" style="min-width:0">Win the shootout: 4 goals</div>`;
+  if (R.arena === "court") { const m = Math.floor(st.clock / 60), s = String(st.clock % 60).padStart(2, "0"); hud.innerHTML = `<div class="board"><div><div class="lb">HOME</div><div class="sc">${st.home}</div></div><div><div class="lb">Q${st.q} ${m}:${s}</div><div class="sc" style="font-size:13px;line-height:30px">${st.finalDone ? "FINAL" : "PAUSED"}</div></div><div><div class="lb">OWLS</div><div class="sc">${st.away}</div></div></div><div class="meter" style="min-width:0">Clock is paused while you think</div>`; }
+  if (R.arena === "main") $("#stage").style.setProperty("--cp", st.crowd >= 60 ? "running" : "paused");
+}
+function entrance() {
+  const ov = document.createElement("div"); ov.className = "entrance";
+  ov.innerHTML = `<div class="comic" style="font-size:22px">Ladies and gentlemen... making their way to the ring...</div><div class="walker">${heroSVG(S.hero, "flex")}</div><div class="name">${esc(S.hero.name)}!</div><div class="comic" style="font-size:22px">vs. the rock-solid rival, BOULDER BRANNIGAN</div><button class="btn big yel" id="ent-go">Let's go!</button>`;
+  $("#stage").appendChild(ov); sfx.win(); particles("fireworks");
+  callout("Best of three falls! Win a fall with 2 right answers. Miss twice on a question and Brannigan scores.");
+  const go2 = () => { ov.remove(); nextChallenge(); };
+  $("#ent-go").onclick = go2; $("#ent-go").focus();
+}
+function nextChallenge() {
+  stopTimer();
+  if (isDone()) return finishRound();
+  const slot = nextSlot();
+  const subject = slot.subject;
+  let tier = slot.tier || tierFor(subject);
+  if (slot.final) { tier = R.mode === "spell" ? "challenge" : tierFor("math"); }
+  const offer = slot.final || slot.skill === "wordsearch" ? null : H.consumeOffer(S.stats, slot.skill);
+  const build = (t, openHint) => {
+    const q = H.generate(slot.skill, t, R.theme, R.used, { final: slot.final && subject === "math" });
+    q.similar = slot.similar; if (slot.final) q.final = true;
+    R.q = q; R.attempt = 0; R.hintOpen = false; R.count++;
+    renderChallenge(); if (openHint) showHint();
+    updateTierBtn(); pips();
+  };
+  if (offer === "harder" && tier !== "challenge") {
+    $("#chal").innerHTML = `<div class="offer"><h3>Power-Up offer!</h3><p style="margin:4px 0 10px">Three in a row in <b>${H.SKILLS[slot.skill].name}</b>! Want a harder one?</p><div class="row"><button class="btn red" id="of-y">Yes, bring it!</button><button class="btn" id="of-n">Keep it standard</button></div></div>`;
+    $("#of-y").onclick = () => build("challenge"); $("#of-n").onclick = () => build(tier); $("#of-y").focus();
+    return;
+  }
+  if (offer === "easier") {
+    $("#chal").innerHTML = `<div class="offer"><h3>Need a boost?</h3><p style="margin:4px 0 10px"><b>${H.SKILLS[slot.skill].name}</b> has been tricky. Every hero trains! What would help?</p><div class="row"><button class="btn blue" id="of-e">Try an easier example</button><button class="btn" id="of-h">Start with a hint</button><button class="btn" id="of-n">I've got this</button></div></div>`;
+    $("#of-e").onclick = () => build(tier === "challenge" ? "standard" : "easy"); $("#of-h").onclick = () => build(tier, true); $("#of-n").onclick = () => build(tier); $("#of-e").focus();
+    return;
+  }
+  build(tier);
+}
+const SPEAKER = `<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M3 9v6h4l5 4V5L7 9H3z" fill="currentColor"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18 6a8.5 8.5 0 0 1 0 12" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg>`;
+function hearBtn(q) { return speechOK && S.settings.speech ? `<button class="btn sm" id="c-hear">${SPEAKER} Hear the word</button>` : ""; }
+function bindHear(q) { const b = $("#c-hear"); if (b) b.onclick = () => { speak(q.answer); setTimeout(() => speak(q.sentence.replace("___", q.answer)), 50); }; }
+function renderChallenge() {
+  const q = R.q, c = $("#chal");
+  const subj = q.subject === "spell" ? "Spelling" : "Math";
+  const tierLbl = q.tier === "challenge" ? "Challenge" : q.tier === "easy" ? "Warm-up" : "Standard";
+  let head = `<div class="row" style="justify-content:space-between"><h3>${q.final ? "FINAL POSSESSION" : `Challenge ${R.count}`} <span class="tag">${subj}</span> <span class="tag ${q.tier === "challenge" ? "m" : ""}">${tierLbl}</span> <span class="tag">${H.SKILLS[q.skill].name}</span>${q.similar ? ` <span class="tag">Try a similar one</span>` : ""}</h3></div>`;
+  if (S.settings.timer && q.type !== "wordsearch") head += `<div class="timerbar" aria-hidden="true"><i id="tbar" style="width:100%"></i></div><p class="muted" id="tlabel" style="margin:-4px 0 6px;font-size:14px">Speed bonus timer (optional)</p>`;
+  let body = "";
+  keyHandler = null;
+  if (q.type === "math") {
+    body = `<p class="prompt">${esc(q.prompt)}</p>${q.visual ? visualHTML(q.visual) : ""}`;
+    if (q.format === "mc") body += `<div class="choices" role="group" aria-label="Answer choices">${q.choices.map((ch, i) => `<button class="btn" data-ch="${esc(ch)}"><span class="sr">Choice ${i + 1}: </span>${esc(ch)}</button>`).join("")}</div>`;
+    else body += `<div class="answer-row"><label class="sr" for="c-in">Your answer</label><input class="txt" id="c-in" autocomplete="off" ${q.answerType === "int" ? 'inputmode="numeric"' : ""} placeholder="${q.answerType === "frac" ? "like 3/4" : "Type answer"}"><button class="btn red" id="c-check">Check</button></div>`;
+  } else if (q.type === "scramble") {
+    body = `<p class="prompt">${q.prompt}</p><p class="clue">Clue: ${esc(q.clue)}</p>${hearBtn(q)}
+    <p class="sr">Type letters on your keyboard or tap tiles.</p><div class="tiles" id="c-slots" aria-label="Your word"></div><div class="tiles" id="c-pool" aria-label="Letter tiles"></div>
+    <div class="row"><button class="btn red" id="c-check">Check</button><button class="btn" id="c-clear">Clear</button></div>`;
+  } else if (q.type === "missing") {
+    body = `<p class="prompt">${q.prompt}</p><p class="sentence">${esc(q.sentence)}</p>${hearBtn(q)}<div class="tiles" id="c-miss">${q.pattern.split("").map((ch, i) => ch === "_" ? `<input class="lin" maxlength="1" data-i="${i}" aria-label="Missing letter ${i + 1}" autocomplete="off" autocapitalize="none">` : `<span class="tile given" aria-hidden="true">${ch}</span>`).join("")}</div><p class="sr">The word pattern is ${q.pattern.split("").map(ch => ch === "_" ? "blank" : ch).join(", ")}</p><div class="row"><button class="btn red" id="c-check">Check</button></div>`;
+  } else if (q.type === "dictation") {
+    body = `<p class="prompt">${q.final ? "Buzzer-beater word! " : ""}${q.prompt}</p><p class="clue">Clue: ${esc(q.clue)}</p><p class="sentence">${esc(q.sentence)}</p>${hearBtn(q)}<p class="muted">${q.answer.length} letters</p>
+    <div class="answer-row"><label class="sr" for="c-in">Spell the word</label><input class="txt" id="c-in" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="Spell it here"><button class="btn red" id="c-check">Check</button></div>`;
+  } else if (q.type === "homophone") {
+    body = `<p class="prompt">${q.prompt}</p><p class="sentence">${esc(q.sentence)}</p><div class="choices">${q.choices.map((ch, i) => `<button class="btn" data-ch="${esc(ch)}"><span class="sr">Choice ${i + 1}: </span>${esc(ch)}</button>`).join("")}</div>`;
+  } else if (q.type === "wordsearch") {
+    body = `<p class="prompt">${q.prompt}</p>` + wsHTML(q);
+  }
+  body += `<div class="row" style="margin-top:12px"><button class="btn sm yel" id="c-hint">Show hint</button></div><div id="c-hintbox" aria-live="polite"></div><div id="c-fb" aria-live="polite"></div>`;
+  c.innerHTML = head + body;
+  $("#c-hint").onclick = showHint;
+  bindHear(q);
+  if (q.type === "math" && q.format === "mc" || q.type === "homophone") {
+    $$("[data-ch]", c).forEach(b => b.onclick = () => submit(b.dataset.ch, b));
+    keyHandler = e => { const n = +e.key; if (n >= 1 && n <= q.choices.length && !R.locked) { const b = $$("[data-ch]", c)[n - 1]; if (!b.disabled) b.click(); } };
+    $$("[data-ch]", c)[0].focus();
+  }
+  if ($("#c-in")) { const inp = $("#c-in"); inp.focus(); inp.onkeydown = e => { if (e.key === "Enter") { e.preventDefault(); $("#c-check").click(); } }; $("#c-check").onclick = () => { if (inp.value.trim()) submit(inp.value); else inp.focus(); }; }
+  if (q.type === "scramble") setupScramble(q);
+  if (q.type === "missing") setupMissing(q);
+  if (q.type === "wordsearch") setupWS(q, () => { const res = R.hintsUsed > 1 ? "second" : "first"; H.recordAttempt(S.stats, q.skill, true); finishChallenge(res); });
+  R.locked = false; R.hintsUsed = 0;
+  startTimer(q);
+}
+function visualHTML(v) { if (v.kind === "fracbar") return v.bars.map(b => fbar(b.n, b.d)).join(""); return ""; }
+function fbar(n, d, label) { return `<div class="fbar" role="img" aria-label="${n} of ${d} parts filled">${Array.from({ length: d }, (_, i) => `<i class="${i < n ? "f" : ""}"></i>`).join("")}</div>${label ? `<div class="muted" style="font-size:14px">${label}</div>` : ""}`; }
+
+/* scramble */
+function setupScramble(q) {
+  const pool = q.tiles.split("").map((ch, i) => ({ ch, i, used: false }));
+  const picked = [];
+  const draw = () => {
+    $("#c-slots").innerHTML = Array.from({ length: q.answer.length }, (_, k) => picked[k] ? `<button class="tile filled" data-s="${k}" aria-label="Remove ${picked[k].ch}">${picked[k].ch}</button>` : `<span class="tile slot" aria-hidden="true"></span>`).join("");
+    $("#c-pool").innerHTML = pool.map(p => `<button class="tile ${p.used ? "used" : ""}" data-p="${p.i}" ${p.used ? 'tabindex="-1" aria-hidden="true"' : ""} aria-label="Letter ${p.ch}">${p.ch}</button>`).join("");
+    $$("#c-pool [data-p]").forEach(b => b.onclick = () => add(+b.dataset.p));
+    $$("#c-slots [data-s]").forEach(b => b.onclick = () => remove(+b.dataset.s));
+  };
+  const add = i => { const p = pool[i]; if (p.used || picked.length >= q.answer.length || R.locked) return; p.used = true; picked.push(p); sfx.tap(); draw(); const nx = $("#c-pool [data-p]:not(.used)"); if (nx) nx.focus(); };
+  const remove = k => { if (R.locked) return; const p = picked.splice(k, 1)[0]; if (p) p.used = false; draw(); };
+  R.scr = { pool, picked, draw, add };
+  $("#c-clear").onclick = () => { picked.splice(0).forEach(p => p.used = false); draw(); };
+  $("#c-check").onclick = () => { if (picked.length < q.answer.length) { fb("info", `Fill all ${q.answer.length} slots first.`); return; } submit(picked.map(p => p.ch).join("")); };
+  keyHandler = e => {
+    if (R.locked || e.target.tagName === "INPUT") return;
+    if (/^[a-z]$/i.test(e.key)) { const p = pool.find(x => !x.used && x.ch === e.key.toLowerCase()); if (p) { e.preventDefault(); add(p.i); } }
+    else if (e.key === "Backspace") { e.preventDefault(); if (picked.length) remove(picked.length - 1); }
+    else if (e.key === "Enter" && picked.length === q.answer.length && !(e.target.tagName === "BUTTON" && e.target.id !== "c-check")) { e.preventDefault(); $("#c-check").click(); }
+  };
+  draw();
+}
+/* missing letters */
+function setupMissing(q) {
+  const ins = $$("#c-miss .lin");
+  ins.forEach((inp, k) => {
+    inp.oninput = () => { inp.value = inp.value.replace(/[^a-z]/gi, "").slice(-1).toLowerCase(); if (inp.value && ins[k + 1]) ins[k + 1].focus(); };
+    inp.onkeydown = e => { if (e.key === "Backspace" && !inp.value && ins[k - 1]) ins[k - 1].focus(); if (e.key === "Enter") $("#c-check").click(); };
+  });
+  ins[0].focus();
+  $("#c-check").onclick = () => {
+    if (ins.some(i => !i.value)) { fb("info", "Fill in every empty box first."); return; }
+    const w = q.pattern.split(""); ins.forEach(i => w[+i.dataset.i] = i.value); submit(w.join(""));
+  };
+}
+/* word search */
+function wsHTML(q) {
+  return `<div class="wslist" id="ws-list">${q.words.map(w => `<span data-w="${w}">${w}</span>`).join("")}</div>
+  <div class="ws" id="ws" role="grid" aria-label="Word search grid, use arrow keys to move and Enter to pick a letter" style="grid-template-columns:repeat(${q.size},minmax(0,1fr))">${q.grid.map((row, r) => row.map((ch, c) => `<button role="gridcell" data-r="${r}" data-c="${c}" tabindex="${r === 0 && c === 0 ? 0 : -1}" aria-label="Row ${r + 1}, column ${c + 1}, ${ch}">${ch}</button>`).join("")).join("")}</div><p class="muted" id="ws-msg" aria-live="polite">Tap the first letter of a word.</p>`;
+}
+function setupWS(q, onDone) {
+  const found = new Set(); let start = null;
+  const cell = (r, c) => $(`#ws [data-r="${r}"][data-c="${c}"]`);
+  const msg = t => { $("#ws-msg").textContent = t; };
+  $$("#ws button").forEach(b => {
+    b.onclick = () => {
+      const r = +b.dataset.r, c = +b.dataset.c;
+      if (!start) { start = [r, c]; b.classList.add("sel"); msg(`Start: ${b.textContent}. Now tap the LAST letter.`); sfx.tap(); return; }
+      const [r1, c1] = start; cell(r1, c1).classList.remove("sel"); start = null;
+      if (r1 === r && c1 === c) { msg("Tap the first letter of a word."); return; }
+      const s = H.readLine(q.grid, r1, c1, r, c), rev = s ? s.split("").reverse().join("") : null;
+      const hit = q.words.find(w => !found.has(w) && (w === s || w === rev));
+      if (hit) {
+        found.add(hit); sfx.good();
+        const dr = Math.sign(r - r1), dc = Math.sign(c - c1), len = Math.max(Math.abs(r - r1), Math.abs(c - c1)) + 1;
+        for (let k = 0; k < len; k++) cell(r1 + dr * k, c1 + dc * k).classList.add("found");
+        $(`#ws-list [data-w="${hit}"]`).classList.add("done");
+        msg(`You found ${hit}! ${q.words.length - found.size} to go.`);
+        if (found.size === q.words.length) { msg("All words found!"); onDone(); }
+      } else { sfx.bad(); msg(s ? `"${s}" isn't on the list. Try again!` : "Words go in straight lines. Try again!"); const g = $("#ws"); g.classList.add("do-shake"); setTimeout(() => g.classList.remove("do-shake"), 450); }
+    };
+    b.onkeydown = e => {
+      const r = +b.dataset.r, c = +b.dataset.c, m = { ArrowUp: [-1, 0], ArrowDown: [1, 0], ArrowLeft: [0, -1], ArrowRight: [0, 1] }[e.key];
+      if (m) { e.preventDefault(); const n = cell(Math.min(q.size - 1, Math.max(0, r + m[0])), Math.min(q.size - 1, Math.max(0, c + m[1]))); b.tabIndex = -1; n.tabIndex = 0; n.focus(); }
+    };
+  });
+  q._found = found;
+  q._flash = () => {
+    const w = q.words.find(x => !found.has(x)); if (!w) return;
+    const p = q.placements.find(x => x.word === w); R.hintsUsed = (R.hintsUsed || 0) + 1;
+    if (R.hintsUsed >= 2) { for (let k = 0; k < w.length; k++) cell(p.r + p.dr * k, p.c + p.dc * k).classList.add("flash"); msg(`${w} is highlighted. Tap its first and last letters.`); }
+    else { cell(p.r, p.c).classList.add("flash"); msg(`${w} starts at the yellow letter.`); }
+  };
+}
+
+/* hints */
+function showHint() {
+  const q = R.q, box = $("#c-hintbox"); if (!box) return;
+  R.hintOpen = true; R.hintsUsed = (R.hintsUsed || 0);
+  if (q.type === "wordsearch") { q._flash(); return; }
+  let h = "";
+  if (q.type === "math") h = mathHint(q.hint);
+  else if (q.type === "scramble") {
+    h = `The word starts with <b>${q.answer[0].toUpperCase()}</b> and has ${q.answer.length} letters.${q.extra ? " One tile is a decoy." : ""}`;
+    const sc = R.scr; if (sc && (!sc.picked.length || sc.picked[0].ch !== q.answer[0])) { sc.picked.splice(0).forEach(p => p.used = false); const p = sc.pool.find(x => x.ch === q.answer[0]); p.used = true; sc.picked.push(p); sc.draw(); h += " I placed the first letter for you."; }
+  } else if (q.type === "missing") {
+    h = `Clue: ${esc(q.clue)}.`;
+    const empty = $$("#c-miss .lin").find(i => i.value !== q.answer[+i.dataset.i]);
+    if (empty) { empty.value = q.answer[+empty.dataset.i]; h += ` I filled in one letter for you.`; }
+  } else if (q.type === "dictation") h = `It starts with <b>${q.answer[0].toUpperCase()}</b> and ends with <b>${q.answer.slice(-1).toUpperCase()}</b>. It has ${q.answer.length} letters.${speechOK ? " Tap Hear the word to listen again." : ""}`;
+  else if (q.type === "homophone") h = `Read the sentence out loud with each word. Ask yourself: is it a place, a number, something that belongs to someone, or an action? Pick the one whose meaning fits.`;
+  box.innerHTML = `<div class="hintbox"><b>Hint:</b> ${h}</div>`;
+  $("#c-hint").disabled = true;
+}
+function mathHint(h) {
+  if (!h) return "";
+  if (h.kind === "array") {
+    const rows = Math.min(h.rows, 12), cols = Math.min(h.cols, 12);
+    return `Picture ${h.rows} rows with ${h.cols} in each row:<br><div class="dots" role="img" aria-label="${h.rows} rows of ${h.cols} dots" style="grid-template-columns:repeat(${cols},14px)">${Array.from({ length: rows * cols }, () => `<i class="dot"></i>`).join("")}</div>`;
+  }
+  if (h.kind === "groups") {
+    const per = h.total / h.groups;
+    return `Share ${h.total} into ${h.groups} equal groups${h.take ? `, then take ${h.take} group${h.take > 1 ? "s" : ""}` : ""}. How many are in each group?<br>${per <= 15 ? Array.from({ length: h.groups }, (_, g) => `<span class="grp ${h.take && g < h.take ? "take" : ""}" role="img" aria-label="group">${Array.from({ length: per }, () => `<i class="dot"></i>`).join("")}</span>`).join("") : ""}`;
+  }
+  if (h.kind === "area") return `Split it into tens and ones:<div class="area"><div style="flex:${h.tens}">${h.tens} × ${h.m}</div><div style="flex:${Math.max(h.ones, 2)}">${h.ones} × ${h.m}</div></div>Multiply each part, then add them together.`;
+  if (h.kind === "fracbar") return `Look at the fraction bars:${h.bars.map(b => fbar(b.n, b.d, b.n + "/" + b.d)).join("")}`;
+  if (h.kind === "place") { const w = Math.max(String(h.a).length, String(h.b).length) + 2; return `Line up the places (ones under ones):<br><span class="place">${String(h.a).padStart(w, " ")}<br>${(h.op === "+" ? "+ " : "− ") + String(h.b).padStart(w - 2, " ")}<br>${"—".repeat(w)}</span><br>Start with the ones column.${h.op === "-" ? " If the top digit is smaller, regroup from the next place." : " If a column makes 10 or more, carry 1."}`; }
+  if (h.kind === "steps") return `<ol>${h.steps.map(s => `<li>${esc(s)}</li>`).join("")}</ol>`;
+  return "";
+}
+
+/* answer handling */
+function fb(kind, html) { $("#c-fb").innerHTML = `<div class="fb ${kind}">${html}</div>`; }
+function submit(ans, btn) {
+  if (R.locked) return;
+  const q = R.q, ok = H.checkAnswer(q, ans);
+  H.recordAttempt(S.stats, q.skill, ok);
+  if (ok) {
+    if (btn) btn.classList.add("right");
+    return finishChallenge(R.attempt === 0 ? "first" : "second");
+  }
+  sfx.bad(); react("hero-g", "do-shake");
+  if (R.attempt === 0) {
+    R.attempt = 1;
+    if (btn) { btn.classList.add("wrong"); btn.disabled = true; }
+    const autoHint = R.arena === "main" || q.type !== "math";
+    fb("bad", `<h4>Not quite — one more try!</h4>${esc(q.explain)}${autoHint ? "" : "<br><b>Tip:</b> tap Show hint for a picture."}`);
+    if (autoHint && !R.hintOpen) showHint();
+    const inp = $("#c-in"); if (inp) { inp.select(); inp.focus(); }
+    persist();
+    return;
+  }
+  if (btn) { btn.classList.add("wrong"); btn.disabled = true; }
+  finishChallenge("missed");
+}
+function finishChallenge(result) {
+  const q = R.q; R.locked = true; stopTimer();
+  const mastered = H.recordQuestion(S.stats, q.skill, result);
+  R.results.push(result);
+  let xp = result === "first" ? 10 : result === "second" ? 5 : 1;
+  if (q.tier === "challenge" && result !== "missed") { xp = Math.round(xp * 1.5); award("challenger"); }
+  if (R.timeLeft > 0 && result !== "missed" && S.settings.timer) xp += 3;
+  R.xp += xp;
+  if (mastered) award("master-" + q.skill);
+  if ((S.stats[q.skill] || {}).streak >= 5) award("streak5");
+  // disable inputs
+  $$("#chal input, #chal [data-ch], #chal #c-check, #chal #c-clear, #chal #c-hint, #c-pool button, #c-slots button").forEach(x => x.disabled = true);
+  let html;
+  if (result === "missed") {
+    html = `<h4>Here's how to solve it</h4><ol>${q.solution.map(s => `<li>${esc(s)}</li>`).join("")}</ol>`;
+    if (q.type === "scramble" || q.type === "missing" || q.type === "dictation") html += `<p style="margin:6px 0 0">Spell it with me: <b>${q.answer.toUpperCase().split("").join(" - ")}</b></p>`;
+    if (!q.final && R.count < 8) { R.queue.push({ subject: q.subject, skill: q.skill, tier: q.tier, due: R.count + 1 }); html += `<p style="margin:6px 0 0">You'll get a similar one later this round.</p>`; }
+    R.review.push(q.type === "math" ? q.prompt + " → " + q.answer : q.answer.toUpperCase());
+  } else {
+    html = `<h4>${result === "first" ? H.pick(["Nailed it!", "Super spelling power!", "Perfect!", "Hero move!", "Boom! Correct!"]) : "You got it on the rebound!"}</h4>+${xp} XP${q.type === "math" && result === "second" ? `<br>${esc(q.solution[q.solution.length - 2] || "")}` : ""}`;
+    sfx.good();
+  }
+  fb(result === "missed" ? "info" : "good", html + `<div class="row" style="margin-top:10px" id="nx-row"></div>`);
+  arenaResult(result, () => {
+    const row = $("#nx-row"); if (!row) return;
+    row.innerHTML = `<button class="btn big red" id="c-next">${isDone() ? "See results" : "Next"}</button>`;
+    $("#c-next").onclick = () => nextChallenge(); $("#c-next").focus();
+    keyHandler = null;
+  });
+  persist(); pips();
+}
+function arenaResult(result, done) {
+  const st = R.st, ok = result !== "missed", rm = document.body.classList.contains("rm"), wait = rm ? 0 : 900;
+  if (R.arena === "rooftop") {
+    if (ok) { const g = GADGETS[st.stage]; st.stage = Math.min(6, st.stage + 1); const p = CLIMB[st.stage]; moveSprite("hero-g", p[0], p[1]); celebrate(); callout(`${g} powered up! ${6 - st.stage ? (6 - st.stage) + " to go." : "All gadgets online!"}`); if (st.stage >= 2) { const rp = $("#rope"); if (rp) rp.setAttribute("opacity", "1"); } }
+    else callout("The gadget sputtered. Shake it off — the next one will power up!");
+    drawHud(); setTimeout(done, wait); return;
+  }
+  if (R.arena === "main") {
+    if (ok) { st.me++; st.crowd = Math.min(100, st.crowd + 16); celebrate(); sfx.crowd(); react("rival-g", "do-shake"); callout(H.pick([`${S.hero.name} hits the Signature Slam! The crowd goes wild!`, "What a move! The crowd is on its feet!", `${S.hero.name} bounces off the ropes — HUGE!`])); }
+    else { st.rv++; st.crowd = Math.max(0, st.crowd - 5); react("rival-g", "do-flex"); callout("Brannigan scores a point! \"Is that all you've got, rookie?\""); }
+    if (!st.decided) {
+      if (st.me >= 2 || st.rv >= 2) {
+        const meWon = st.me >= 2; if (meWon) st.fMe++; else st.fRv++;
+        const msg = meWon ? `${S.hero.name} wins fall ${st.fall}!` : `Brannigan takes fall ${st.fall}!`;
+        st.fall++; st.me = 0; st.rv = 0;
+        if (st.fMe >= 2 || st.fRv >= 2) { st.decided = true; st.winner = st.fMe >= 2 ? "me" : "rival"; callout(st.winner === "me" ? `${msg} ${S.hero.name} wins the match! ${R.count < 6 ? "The crowd chants ENCORE!" : ""}` : `${msg} Brannigan wins this one... rematch time soon!`); }
+        else callout(msg + " On to the next fall!");
+        if (meWon) { pow("FALL WON!"); particles("confetti"); }
+      }
+    } else if (ok) callout("ENCORE! The crowd meter keeps climbing!");
+    if (R.count >= 8 && !st.decided) { st.decided = true; st.winner = st.fMe > st.fRv || (st.fMe === st.fRv && st.crowd >= 50) ? "me" : "rival"; callout(st.winner === "me" ? "Time's up — the crowd decides... " + S.hero.name + " wins!" : "Time's up — the judges give it to Brannigan. So close!"); }
+    drawHud(); setTimeout(done, wait); return;
+  }
+  if (R.arena === "soccer") {
+    if (!ok) { callout("No shot this time — Keeper Kova grabs the loose ball."); drawHud(); setTimeout(done, wait / 2); return; }
+    aimPicker(result, done); return;
+  }
+  if (R.arena === "court") {
+    const q = R.q;
+    if (q.final) {
+      st.finalDone = true;
+      if (ok) { st.home += 3; st.finalWon = true; shootBall(true); celebrate(true); callout("SWISH! Buzzer-beater three! You win it at the horn!"); award("buzzer"); }
+      else { callout("The shot rims out at the buzzer. So close — run it back next time!"); shootBall(false); }
+      st.clock = 0; drawHud(); setTimeout(done, wait + 400); return;
+    }
+    if (ok) { const pts = result === "first" ? 3 : 2; st.home += pts; shootBall(true); celebrate(); callout(pts === 3 ? "Splash! A three-pointer!" : "Two points off the glass!"); }
+    else { st.away += 2; shootBall(false); callout("Turnover — the Owls score on the fast break."); }
+    st.clock = Math.max(24, st.clock - 21);
+    if (R.count % 2 === 0) { st.away += 2; setTimeout(() => { callout("The Owls answer with a bucket. Your ball!"); drawHud(); }, wait); }
+    // set up final possession
+    const nextIsFinal = (R.count >= roundLen() - 1 && !R.queue.length) || R.count >= 7;
+    if (nextIsFinal) setTimeout(() => { st.away = st.home + 2; st.clock = 6; drawHud(); callout("The Owls hit a big shot! Down 2 with 6 seconds left. FINAL POSSESSION — the clock waits for you."); }, wait + 400);
+    drawHud(); setTimeout(done, wait + 400); return;
+  }
+  done();
+}
+function shootBall(make) {
+  const b = $("#ball"); if (!b) return;
+  b.style.transition = "transform .8s cubic-bezier(.3,-.6,.6,1)"; b.style.transform = make ? "translate(575px,108px)" : "translate(620px,80px)";
+  if (make) sfx.swish();
+  setTimeout(() => { b.style.transition = "none"; b.style.transform = "translate(330px,250px)"; requestAnimationFrame(() => b.style.transition = ""); }, 1300);
+}
+const ZONES = [["Top left", 300, 110], ["Top middle", 400, 110], ["Top right", 500, 110], ["Low left", 300, 195], ["Low middle", 400, 195], ["Low right", 500, 195]];
+function aimPicker(result, done) {
+  const row = $("#nx-row");
+  row.outerHTML = `<div id="aim-wrap"><p style="margin:8px 0 0"><b>You earned a shot!</b> Where do you aim? (Arrow keys + Enter work too.)</p><div class="aim" role="group" aria-label="Aim your shot">${ZONES.map((z, i) => `<button class="btn" data-z="${i}">${z[0]}</button>`).join("")}</div></div><div class="row" style="margin-top:10px" id="nx-row"></div>`;
+  const btns = $$("[data-z]"); btns[1].focus();
+  btns.forEach((b, i) => {
+    b.onclick = () => shoot(i);
+    b.onkeydown = e => { const m = { ArrowLeft: -1, ArrowRight: 1, ArrowUp: -3, ArrowDown: 3 }[e.key]; if (m !== undefined) { e.preventDefault(); const n = i + m; if (n >= 0 && n < 6) btns[n].focus(); } };
+  });
+  const shoot = z => {
+    btns.forEach(b => b.disabled = true);
+    const st = R.st; st.shots++;
+    let dive = H.ri(0, 5);
+    if (result === "first") while (dive === z) dive = H.ri(0, 5);
+    const saved = dive === z;
+    const [, x, y] = ZONES[z], kx = ZONES[dive][1] - 38, ky = ZONES[dive][2] - 70;
+    moveSprite("hero-g", 330, 175); sfx.whistle();
+    setTimeout(() => {
+      const ball = $("#ball"); ball.style.transition = "transform .6s ease-out"; ball.style.transform = `translate(${x}px,${y}px)`;
+      moveSprite("rival-g", Math.max(250, Math.min(480, kx)), Math.max(70, Math.min(140, ky)));
+    }, 250);
+    setTimeout(() => {
+      if (saved) { st.saves++; react("rival-g", "do-flex"); callout("SAVED! Keeper Kova guessed right. (Right on the first try = unstoppable shot!)"); }
+      else { st.goals++; celebrate(); sfx.crowd(); callout(H.pick(["GOOOAL! Top bins!", "GOAL! The keeper never had a chance!", "It's in! What a strike!"])); }
+      drawHud();
+      setTimeout(() => { const ball = $("#ball"); if (ball) { ball.style.transition = "none"; ball.style.transform = "translate(400px,285px)"; } moveSprite("rival-g", 362, 126); moveSprite("hero-g", 230, 175); }, 900);
+      done();
+    }, document.body.classList.contains("rm") ? 300 : 1000);
+  };
+}
+
+/* timer */
+function startTimer(q) {
+  stopTimer(); R.timeLeft = 0;
+  if (!S.settings.timer || q.type === "wordsearch") return;
+  const total = q.subject === "spell" ? 60 : 45; R.timeLeft = total;
+  timerId = setInterval(() => {
+    R.timeLeft--; const b = $("#tbar"); if (b) b.style.width = Math.max(0, R.timeLeft / total * 100) + "%";
+    if (R.timeLeft <= 0) { stopTimer(); const l = $("#tlabel"); if (l) l.textContent = "Bonus time is over — no rush, keep going!"; }
+  }, 1000);
+}
+function stopTimer() { if (timerId) clearInterval(timerId); timerId = null; }
+
+/* awards */
+function award(id) {
+  if (S.badges.indexOf(id) >= 0 || !H.BADGES[id]) return false;
+  S.badges.push(id); toast("Badge earned: " + H.BADGES[id].name); if (R) (R.newBadges = R.newBadges || []).push(id); persist(); return true;
+}
+function checkUnlocks() {
+  const now = H.unlockedFor(S.xp), fresh = now.filter(id => S.unlocks.indexOf(id) < 0);
+  fresh.forEach(id => S.unlocks.push(id));
+  return fresh.map(id => H.UNLOCKS.find(u => u.id === id));
+}
+function finishRound() {
+  stopTimer(); R.over = true;
+  const st = R.st; let title, sub, win = false;
+  if (R.arena === "rooftop") { win = st.stage >= 6; title = win ? "RESCUE COMPLETE!" : "Citizen rescued!"; sub = win ? "All six gadgets powered. The city cheers for " + S.hero.name + "!" : `${st.stage} of 6 gadgets powered. ${S.hero.name} made it with teamwork from the Hero League!`; if (win) award("rescuer"); moveSprite("cit-g", CLIMB[6][0] + 40, CLIMB[6][1] + 10); }
+  if (R.arena === "main") { win = st.winner === "me"; title = win ? "NEW CHAMPION!" : "What a battle!"; sub = win ? `${S.hero.name} wins ${st.fMe} falls to ${st.fRv} and takes the title belt!` : `Brannigan edges it ${st.fRv} falls to ${st.fMe}. The rematch is booked!`; if (win) award("champ-belt"); }
+  if (R.arena === "soccer") { win = st.goals >= 4; title = win ? "SHOOTOUT CHAMPS!" : "Great shootout!"; sub = `${st.goals} goal${st.goals === 1 ? "" : "s"} on ${st.shots} shot${st.shots === 1 ? "" : "s"}.${st.shots ? " That's " + st.goals + "/" + st.shots + " of your shots in!" : ""}`; if (st.goals >= 3) award("hat-trick"); }
+  if (R.arena === "court") { win = st.finalWon; title = win ? "BUZZER-BEATER WIN!" : "Down to the wire!"; sub = `Final score: Home ${st.home}, Owls ${st.away}.`; }
+  const bonus = 20 + (win ? 15 : 0); R.xp += bonus;
+  if (R.results.length && R.results.every(r => r === "first")) award("perfect");
+  award("first-round");
+  S.xp += R.xp; S.rounds++; if (win) S.wins[R.arena] = (S.wins[R.arena] || 0) + 1;
+  const firsts = R.results.filter(r => r === "first").length, seconds = R.results.filter(r => r === "second").length;
+  S.log.unshift({ t: Date.now(), arena: R.arena, mode: R.mode, n: R.results.length, first: firsts, second: seconds, xp: R.xp, win });
+  S.log = S.log.slice(0, 20);
+  const fresh = checkUnlocks(); persist(); topbar();
+  if (win) { celebrate(true); sfx.win(); } else sfx.good();
+  const badges = (R.newBadges || []).map(id => H.BADGES[id]);
+  $("#chal").innerHTML = `<h2>${title}</h2><p style="font-size:19px">${esc(sub)}</p>
+   <div class="row"><span class="chip">Right first try: <b>${firsts}</b></span><span class="chip">Got it on retry: <b>${seconds}</b></span><span class="chip">XP earned: <b>+${R.xp}</b></span></div>
+   ${badges.length ? `<h3 style="margin-top:14px">New badges</h3><div class="badges" style="margin-top:8px">${badges.map(b => `<div class="badge">${badgeIcon()}<b>${esc(b.name)}</b>${esc(b.desc)}</div>`).join("")}</div>` : ""}
+   ${fresh.length ? `<h3 style="margin-top:14px">Unlocked!</h3><p>${fresh.map(u => `<span class="tag m">${esc(u.name)}</span>`).join(" ")} — equip them in the Locker or Hero Lab.</p>` : ""}
+   ${R.review.length ? `<h3 style="margin-top:14px">Practice these again</h3><ul>${R.review.map(r => `<li>${esc(r)}</li>`).join("")}</ul>` : ""}
+   <div class="row" style="margin-top:14px"><button class="btn big red" id="rs-again">Play again</button><button class="btn" id="rs-hub">Choose arena</button><button class="btn" id="rs-prog">See progress</button>${fresh.length ? `<button class="btn yel" id="rs-lock">Open Locker</button>` : ""}</div>`;
+  callout(title);
+  const arena = R.arena, mode = R.mode;
+  $("#rs-again").onclick = () => startRound(arena, mode); $("#rs-hub").onclick = () => go("hub"); $("#rs-prog").onclick = () => go("progress");
+  if ($("#rs-lock")) $("#rs-lock").onclick = () => go("locker");
+  $("#rs-again").focus(); pips();
+}
+function badgeIcon(locked) { return `<svg viewBox="0 0 60 60" aria-hidden="true"><path d="M30 4 L37 20 L55 21 L41 33 L46 51 L30 41 L14 51 L19 33 L5 21 L23 20Z" fill="${locked ? "#bbb" : "#ffd23f"}" stroke="#16141a" stroke-width="4" stroke-linejoin="round"/></svg>`; }
+
+/* ---------- training gym: word vault ---------- */
+function renderVault() {
+  const q = H.genWordle(); const ans = q.answer; window.__HLA_vault = ans; const rows = []; let cur = ""; let over = false; const keys = {};
+  const SYM = { correct: "✓", present: "↔", absent: "✕" }, LBL = { correct: "right spot", present: "in the word, wrong spot", absent: "not in the word" };
+  screen.innerHTML = `<section class="panel"><span class="caption">Training Gym</span><div class="row" style="justify-content:space-between;margin-top:6px"><h2>Word Vault</h2><button class="btn sm" id="v-back">Back to arenas</button></div>
+  <p>Guess the secret 5-letter word in six tries. Every guess must be a real word.</p>
+  <div class="legend"><span><i class="wc correct" style="font-size:13px">✓</i> right letter, right spot</span><span><i class="wc present" style="font-size:13px">↔</i> in the word, wrong spot</span><span><i class="wc absent" style="font-size:13px">✕</i> not in the word</span></div>
+  <div class="wd" id="v-grid"></div><p id="v-msg" aria-live="polite" style="text-align:center;font-weight:900;min-height:1.5em"></p><div class="kb" id="v-kb"></div><div class="row c" id="v-after" style="margin-top:12px"></div></section>`;
+  $("#v-back").onclick = () => go("hub");
+  const KB = ["qwertyuiop", "asdfghjkl", "+zxcvbnm-"];
+  const draw = () => {
+    let h = "";
+    for (let r = 0; r < 6; r++) {
+      const row = rows[r], g = row ? row.g : r === rows.length ? cur : "";
+      h += `<div class="wr" role="row">` + Array.from({ length: 5 }, (_, i) => { const st = row ? row.s[i] : ""; const ch = g[i] || ""; return `<div class="wc ${st}" role="gridcell" aria-label="${ch ? ch.toUpperCase() + (st ? ", " + LBL[st] : "") : "empty"}">${ch}${st ? `<small aria-hidden="true">${SYM[st]}</small>` : ""}</div>`; }).join("") + `</div>`;
+    }
+    $("#v-grid").innerHTML = h;
+    $("#v-kb").innerHTML = KB.map(r => `<div class="kr">${r.split("").map(k => k === "+" ? `<button class="key wide" data-k="Enter">Enter</button>` : k === "-" ? `<button class="key wide" data-k="Backspace">Delete</button>` : `<button class="key ${keys[k] || ""}" data-k="${k}" aria-label="${k}${keys[k] ? ", " + LBL[keys[k]] : ""}">${k.toUpperCase()}</button>`).join("")}</div>`).join("");
+    $$("#v-kb [data-k]").forEach(b => b.onclick = () => press(b.dataset.k));
+  };
+  const msg = t => $("#v-msg").textContent = t;
+  const press = k => {
+    if (over) return;
+    if (k === "Enter") {
+      if (cur.length < 5) return msg("Not enough letters — need 5.");
+      if (!H.isValidGuess(cur)) return msg(`"${cur.toUpperCase()}" isn't in the word list. Try another word.`);
+      const s = H.wordleScore(cur, ans); rows.push({ g: cur, s });
+      s.forEach((st, i) => { const ch = cur[i], rank = { correct: 3, present: 2, absent: 1 }; if (!keys[ch] || rank[st] > rank[keys[ch]]) keys[ch] = st; });
+      const won = cur === ans; cur = "";
+      if (won || rows.length === 6) {
+        over = true;
+        H.recordAttempt(S.stats, "wordle", won); H.recordQuestion(S.stats, "wordle", won ? "first" : "missed");
+        const xp = won ? 30 - (rows.length - 1) * 3 : 5; S.xp += xp; if (won) award("vault"); checkUnlocks().forEach(u => toast("Unlocked: " + u.name)); persist(); topbar();
+        msg(won ? `Vault cracked in ${rows.length}! +${xp} XP` : `The word was ${ans.toUpperCase()}. +${xp} XP for training!`);
+        if (won) { celebrate(); sfx.good(); } else sfx.bad();
+        $("#v-after").innerHTML = `<button class="btn red" id="v-again">New word</button>`; $("#v-again").onclick = () => go("vault"); $("#v-again").focus();
+      } else msg(rows.length === 5 ? "Last guess — think it through!" : "");
+    } else if (k === "Backspace") cur = cur.slice(0, -1);
+    else if (/^[a-z]$/.test(k) && cur.length < 5) cur += k;
+    draw();
+  };
+  keyHandler = e => { if (e.ctrlKey || e.metaKey || e.altKey) return; if (e.key === "Enter" && e.target.tagName === "BUTTON" && !e.target.dataset.k) return; if (e.key === "Enter" || e.key === "Backspace") { e.preventDefault(); press(e.key); } else if (/^[a-z]$/i.test(e.key)) press(e.key.toLowerCase()); };
+  draw();
+}
+/* ---------- training gym: hero hunt ---------- */
+function renderHunt() {
+  const q = H.generate("wordsearch", "challenge", null, {}, { big: true }); window.__HLA_hunt = q;
+  let hints = 0;
+  screen.innerHTML = `<section class="panel"><span class="caption">Training Gym</span><div class="row" style="justify-content:space-between;margin-top:6px"><h2>Hero Hunt</h2><button class="btn sm" id="hh-back">Back to arenas</button></div>
+  <p>${q.prompt} Words run across, down, or on a slant.</p>${wsHTML(q)}<div class="row"><button class="btn sm yel" id="hh-hint">Show hint</button><button class="btn sm" id="hh-new">New puzzle</button></div><div id="hh-after"></div></section>`;
+  R = { st: {}, hintsUsed: 0, over: true };
+  setupWS(q, () => {
+    const res = R.hintsUsed > 1 ? "second" : "first"; H.recordAttempt(S.stats, "wordsearch", true); H.recordQuestion(S.stats, "wordsearch", res);
+    S.xp += 25; award("hunter"); checkUnlocks().forEach(u => toast("Unlocked: " + u.name)); persist(); topbar(); celebrate(); sfx.good();
+    $("#hh-after").innerHTML = `<div class="fb good"><h4>Hunt complete! +25 XP</h4><button class="btn red" id="hh-again">Another puzzle</button></div>`; $("#hh-again").onclick = () => go("hunt"); $("#hh-again").focus();
+  });
+  $("#hh-hint").onclick = () => q._flash();
+  $("#hh-new").onclick = () => go("hunt"); $("#hh-back").onclick = () => go("hub");
+  $("#ws [data-r]").focus();
+}
+
+/* ---------- progress ---------- */
+function renderProgress() {
+  const row = k => {
+    const s = S.stats[k] || H.newSkillStat(), acc = s.attempts ? Math.round(s.correct / s.attempts * 100) : 0, first = s.attempts ? Math.round(s.firstTry / s.attempts * 100) : 0;
+    return `<div class="skillrow"><div><b>${H.SKILLS[k].name}</b><div class="muted" style="font-size:14px">${s.attempts ? `${s.attempts} practiced · ${first}% first try` : "Not practiced yet"}</div></div>
+    <div class="acc-wrap"><div class="acc" role="img" aria-label="${acc}% correct"><i style="width:${acc}%"></i></div><div class="muted" style="font-size:13px">${acc}% correct (including retries)</div></div>
+    <div>${s.mastered ? `<span class="tag m">Mastered</span>` : s.attempts ? `<span class="tag">Best streak ${s.best}</span>` : ""}</div></div>`;
+  };
+  const spell = Object.keys(H.SKILLS).filter(k => H.SKILLS[k].subject === "spell"), math = Object.keys(H.SKILLS).filter(k => H.SKILLS[k].subject === "math");
+  const tot = list => list.reduce((a, k) => { const s = S.stats[k]; if (s) { a.n += s.attempts; a.c += s.correct; } return a; }, { n: 0, c: 0 });
+  const ts = tot(spell), tm = tot(math);
+  const names = { rooftop: "Rooftop Rescue", main: "Main Event", soccer: "Soccer Shootout", court: "Clutch Court" };
+  screen.innerHTML = `<section class="panel"><h2>${esc(S.hero.name || "Hero")}'s Progress</h2>
+   <div class="row" style="margin-top:10px"><span class="chip">Level <b>${H.level(S.xp)}</b></span><span class="chip"><b>${S.xp}</b> XP</span><span class="chip">Rounds <b>${S.rounds}</b></span><span class="chip">Badges <b>${S.badges.length}</b></span>
+   <span class="chip">Spelling level: <b>${S.settings.spellTier === "challenge" ? "Challenge" : "Standard"}</b></span><span class="chip">Math level: <b>${S.settings.mathTier === "challenge" ? "Challenge" : "Standard"}</b></span></div></section>
+   <div class="grid2" style="grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr))">
+   <section class="panel"><span class="caption">Spelling</span><p class="muted" style="margin-top:6px">${ts.n ? `${ts.n} words practiced · ${Math.round(ts.c / ts.n * 100)}% correct` : "No spelling practice yet."}</p>${spell.map(row).join("")}</section>
+   <section class="panel"><span class="caption">Math</span><p class="muted" style="margin-top:6px">${tm.n ? `${tm.n} problems practiced · ${Math.round(tm.c / tm.n * 100)}% correct` : "No math practice yet."}</p>${math.map(row).join("")}</section></div>
+   <section class="panel"><span class="caption">Badges</span><div class="badges" style="margin-top:10px">${Object.keys(H.BADGES).map(id => { const b = H.BADGES[id], got = S.badges.indexOf(id) >= 0; return `<div class="badge ${got ? "" : "locked"}">${badgeIcon(!got)}<b>${esc(b.name)}</b>${esc(b.desc)}${got ? "" : '<span class="sr"> (not earned yet)</span>'}</div>`; }).join("")}</div></section>
+   <section class="panel"><span class="caption">Recent rounds</span><div style="margin-top:8px">${S.log.length ? `<ul>${S.log.slice(0, 10).map(l => `<li>${new Date(l.t).toLocaleDateString()} — ${names[l.arena]} (${{ spell: "Spelling", math: "Math", mixed: "Mixed" }[l.mode]}): ${l.first} first try, ${l.second} on retry, of ${l.n}${l.win ? " · WIN" : ""} · +${l.xp} XP</li>`).join("")}</ul>` : "<p>No rounds yet. Go play one!</p>"}</div></section>
+   <div class="row"><button class="btn red" id="p-back">Back to arenas</button></div>`;
+  $("#p-back").onclick = () => go(S.hero.name ? "hub" : "title");
+}
+
+/* ---------- locker ---------- */
+function renderLocker() {
+  const kinds = { cape: "Capes", mask: "Masks", emblem: "Emblems", gloves: "Gloves", boots: "Boots", banner: "Arena banners", celebration: "Celebrations" };
+  const equipKey = { "cape-storm": ["hero", "cape", "storm"], "cape-royal": ["hero", "cape", "royal"], "mask-visor": ["hero", "mask", "visor"], "mask-helm": ["hero", "mask", "helm"], "emblem-flame": ["hero", "emblem", "flame"], "emblem-crown": ["hero", "emblem", "crown"], "gloves-power": ["hero", "gloves", "power"], "boots-rocket": ["hero", "boots", "rocket"], "banner-bolt": ["settings", "banner", "bolt"], "banner-stars": ["settings", "banner", "stars"], "banner-checker": ["settings", "banner", "checker"], "banner-galaxy": ["settings", "banner", "galaxy"], "celeb-confetti": ["settings", "celebration", "confetti"], "celeb-lightning": ["settings", "celebration", "lightning"], "celeb-fireworks": ["settings", "celebration", "fireworks"], "celeb-spin": ["settings", "celebration", "spin"] };
+  const isOn = id => { const [o, k, v] = equipKey[id]; return S[o][k] === v; };
+  screen.innerHTML = `<section class="panel"><h2>Hero Locker</h2><p>Earn XP to unlock new gear. You have <b>${S.xp} XP</b>.</p>
+   <div class="grid2" style="grid-template-columns:minmax(0,220px) minmax(0,1fr)"><div class="herobox" id="lk-prev">${heroSVG(S.hero, "flex")}</div>
+   <div>${Object.keys(kinds).map(k => `<h3 style="margin:10px 0 6px">${kinds[k]}</h3><div class="row">${H.UNLOCKS.filter(u => u.kind === k).map(u => { const got = has(u.id), on = got && isOn(u.id); return `<button class="choice" data-u="${u.id}" ${got ? "" : "disabled"} aria-pressed="${on}">${esc(u.name)} ${got ? (on ? "· equipped" : "· equip") : `· ${u.xp} XP`}</button>`; }).join("")}${k === "banner" ? `<button class="choice" data-off="banner" aria-pressed="${S.settings.banner === "none"}">No banner</button>` : ""}${k === "celebration" ? `<button class="choice" data-off="celebration" aria-pressed="${S.settings.celebration === "starburst"}">Star Burst (starter)</button><button class="btn sm" id="lk-try">Preview celebration</button>` : ""}</div>`).join("")}
+   <div class="banner ${S.settings.banner}" style="margin-top:14px"></div></div></div></section><div class="row"><button class="btn red" id="lk-back">Back to arenas</button><button class="btn" id="lk-edit">Open Hero Lab</button></div>`;
+  $$("[data-u]").forEach(b => b.onclick = () => { const [o, k, v] = equipKey[b.dataset.u]; const def = { cape: "classic", mask: "domino", emblem: "bolt", gloves: "basic", boots: "basic", banner: "none", celebration: "starburst" }; S[o][k] = S[o][k] === v ? def[k] : v; persist(); sfx.tap(); renderLocker(); });
+  $$("[data-off]").forEach(b => b.onclick = () => { S.settings[b.dataset.off] = b.dataset.off === "banner" ? "none" : "starburst"; persist(); renderLocker(); });
+  $("#lk-try").onclick = () => celebrate(); $("#lk-back").onclick = () => go("hub"); $("#lk-edit").onclick = () => go("creator");
+}
+
+/* ---------- settings ---------- */
+function renderSettings() {
+  const sw = (id, label, on, desc) => `<div class="skillrow" style="grid-template-columns:minmax(0,1fr) auto"><div><b>${label}</b><div class="muted" style="font-size:14px">${desc}</div></div><button class="btn sm ${on ? "on" : ""}" id="${id}" aria-pressed="${on}">${on ? "On" : "Off"}</button></div>`;
+  const rmOn = document.body.classList.contains("rm");
+  screen.innerHTML = `<section class="panel"><h2>Settings</h2>
+   ${sw("s-mute", "Mute sounds", S.settings.mute, "Turns off sound effects. Hear the word still works when you tap it.")}
+   ${sw("s-rm", "Reduced motion", rmOn, "Stops bouncing, flying, and flashing effects.")}
+   ${sw("s-timer", "Speed bonus timer", S.settings.timer, "Optional countdown for bonus XP. Running out never costs points.")}
+   ${sw("s-speech", "Hear the word button", S.settings.speech, speechOK ? "Reads spelling words aloud using this browser's voice." : "This browser can't read words aloud, so written clues are used instead.")}
+   <div class="skillrow" style="grid-template-columns:minmax(0,1fr) auto"><div><b>Spelling level</b><div class="muted" style="font-size:14px">Standard or Challenge words.</div></div><div class="seg">${["standard", "challenge"].map(t => `<button data-k="spellTier" data-v="${t}" aria-pressed="${S.settings.spellTier === t}">${t === "standard" ? "Standard" : "Challenge"}</button>`).join("")}</div></div>
+   <div class="skillrow" style="grid-template-columns:minmax(0,1fr) auto"><div><b>Math level</b><div class="muted" style="font-size:14px">Standard (3rd–4th grade) or Challenge.</div></div><div class="seg">${["standard", "challenge"].map(t => `<button data-k="mathTier" data-v="${t}" aria-pressed="${S.settings.mathTier === t}">${t === "standard" ? "Standard" : "Challenge"}</button>`).join("")}</div></div>
+   </section><section class="panel"><span class="caption">Saved game</span><p style="margin-top:8px">${storageOK ? "Progress, unlocked items, and settings save automatically on this device and browser." : "This browser is blocking saves, so progress resets when the page closes."}</p>
+   <button class="btn red" id="s-new">New Game (erase saved progress)</button></section><div class="row"><button class="btn" id="s-back">Back</button></div>`;
+  $("#s-mute").onclick = () => { S.settings.mute = !S.settings.mute; persist(); renderSettings(); topbar(); };
+  $("#s-rm").onclick = () => { S.settings.reducedMotion = !rmOn; persist(); applySettings(); renderSettings(); };
+  $("#s-timer").onclick = () => { S.settings.timer = !S.settings.timer; persist(); renderSettings(); };
+  $("#s-speech").onclick = () => { S.settings.speech = !S.settings.speech; persist(); renderSettings(); };
+  $$("[data-k]").forEach(b => b.onclick = () => { S.settings[b.dataset.k] = b.dataset.v; persist(); renderSettings(); });
+  $("#s-new").onclick = newGameFlow; $("#s-back").onclick = () => go(S.hero.name ? "hub" : "title");
+}
+
+/* ---------- boot ---------- */
+applySettings();
+go("title");
+window.__HLA = { get S() { return S; }, get R() { return R; }, go, startRound, persist };
+}
+</script>
+</body>
+</html>
